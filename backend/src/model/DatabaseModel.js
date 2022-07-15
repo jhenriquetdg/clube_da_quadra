@@ -1,6 +1,7 @@
-import { db_open } from "../db.js";
 
-export async function createTablePessoa() {
+const { db_open } = require('../database/initDB');
+
+async function createTablePessoa() {
   db_open().then((db) => {
     db.exec(
       "CREATE TABLE IF NOT EXISTS `Pessoa` (" +
@@ -14,7 +15,7 @@ export async function createTablePessoa() {
   });
 }
 
-export async function createTableJogador() {
+async function createTableJogador() {
   db_open().then((db) => {
     db.exec(
       "CREATE TABLE IF NOT EXISTS `Jogador` (" +
@@ -31,43 +32,41 @@ export async function createTableJogador() {
   });
 }
 
-export async function createTableQuadra() {
+async function createTableQuadra() {
   db_open().then((db) => {
     db.exec(
       "CREATE TABLE IF NOT EXISTS `Quadra` (" +
-        " `ID` INT NOT NULL," +
+        " `ID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
         " `descricao` VARCHAR(280) NULL," +
-        " `endereco` VARCHAR(70) NULL," +
-        "PRIMARY KEY (`ID`))"
+        " `endereco` VARCHAR(70) NULL)"
     );
   });
 }
 
-export async function createTableModalidade() {
+async function createTableModalidade() {
   db_open().then((db) => {
     db.exec(
       "CREATE TABLE IF NOT EXISTS `Modalidade` (" +
-        " `ID` INT NOT NULL," +
+        " `ID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+        " `nome` VARCHAR(32) NOT NULL," +
         " `descricao` VARCHAR(280) NULL," +
-        " `qtdJogadores` INT NULL," +
-        "PRIMARY KEY (`ID`))"
+        " `qtdJogadores` INT NULL)"
     );
   });
 }
 
-export async function createTableHorario() {
+async function createTableHorario() {
   db_open().then((db) => {
     db.exec(
       "CREATE TABLE IF NOT EXISTS `Horario` (",
-      " `ID` INT NOT NULL,",
+      " `ID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,",
       " `dataHoraInicio` DATETIME NULL,",
-      " `dataHoraFim` DATETIME NULL,",
-      "PRIMARY KEY (`ID`))"
+      " `dataHoraFim` DATETIME NULL)"
     );
   });
 }
 
-export async function createTablePartida() {
+async function createTablePartida() {
   db_open().then((db) => {
     db.exec(
       "CREATE TABLE IF NOT EXISTS `Partida` (" +
@@ -95,7 +94,7 @@ export async function createTablePartida() {
   });
 }
 
-export async function createTableInteresse() {
+async function createTableInteresse() {
   db_open().then((db) => {
     db.exec(
       "CREATE TABLE IF NOT EXISTS `Interesse` (" +
@@ -123,7 +122,7 @@ export async function createTableInteresse() {
   });
 }
 
-export async function createTableQuadraModalidade() {
+async function createTableQuadraModalidade() {
   db_open().then((db) => {
     db.exec(
       "CREATE TABLE IF NOT EXISTS `QuadraModalidade` (" +
@@ -144,7 +143,7 @@ export async function createTableQuadraModalidade() {
   });
 }
 
-export async function createTableComentario() {
+async function createTableComentario() {
   db_open().then((db) => {
     db.exec(
       "CREATE TABLE IF NOT EXISTS `Comentario` (" +
@@ -155,7 +154,7 @@ export async function createTableComentario() {
   });
 }
 
-export async function createTableComentarioPartida() {
+async function createTableComentarioPartida() {
   db_open().then((db) => {
     db.exec(
       "CREATE TABLE IF NOT EXISTS `ComentarioPartida` (" +
@@ -182,7 +181,7 @@ export async function createTableComentarioPartida() {
   });
 }
 
-export async function createTableComentarioComentario() {
+async function createTableComentarioComentario() {
   db_open().then((db) => {
     db.exec(
       "CREATE TABLE IF NOT EXISTS `ComentarioComentario` (" +
@@ -203,7 +202,7 @@ export async function createTableComentarioComentario() {
   });
 }
 
-export async function selectTables(req, res) {
+async function selectTables(req, res) {
   console.log("Listing tables...");
   db_open()
     .then((db) => {
@@ -213,9 +212,10 @@ export async function selectTables(req, res) {
   console.log(" done.");
 }
 
-export async function createTables(req, res) {
+async function createTables(req, res) {
   createTablePessoa();
   createTableJogador();
+  // createTableHorario();
   createTableQuadra();
   createTableModalidade();
   createTablePartida();
@@ -224,5 +224,9 @@ export async function createTables(req, res) {
   createTableComentario();
   createTableComentarioPartida();
   createTableComentarioComentario();
-  console.log("Database tables were created successfully.");
+  console.log("Database tables was successfully created.");
+}
+
+module.exports = {
+  createTables
 }
