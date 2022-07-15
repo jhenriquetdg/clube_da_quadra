@@ -1,0 +1,41 @@
+.nav__bar{
+    height: 100px;  
+    width: 1100px;
+
+    background-color: #fff;
+    
+    display: flex;
+    justify-content: space-between;
+    color: #000;
+
+    margin: 0 auto;
+    padding: 1rem;
+
+/* 
+    margin: 20px auto;
+    padding: 20px 50px; */
+}
+
+.nav__bar ul{
+    display: flex;
+    justify-content: space-evenly;
+    list-style: none;
+}
+
+.nav__bar ul li{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    
+}
+.nav__bar ul li a{
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.nav__bar ul li span{
+    font-size: 30px;
+}

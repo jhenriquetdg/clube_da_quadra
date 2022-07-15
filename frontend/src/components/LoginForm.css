@@ -1,0 +1,30 @@
+.login__form{
+    height: 500px;
+    background-color: aquamarine;
+    margin: 50px auto;
+    width: 80vw;
+    padding: 20px;
+}
+
+.login__form fieldset{
+    font-size: 40px;
+    border: #000 solid 5px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.login__form fieldset input {
+    height: 40px;
+    margin-bottom: 20px;
+}
+
+.login__form fieldset button {
+    height: 50px;
+    font-size: 40px;
+    background-color: cadetblue;
+}
+.login__form fieldset button:hover {
+    background-color: blueviolet;
+}
+
