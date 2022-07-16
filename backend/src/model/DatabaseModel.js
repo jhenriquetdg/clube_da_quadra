@@ -1,5 +1,6 @@
+// const { db_open } = require("../database/initDB");
 
-const { db_open } = require('../database/initDB');
+import { db_open } from "../database/initDB.js";
 
 async function createTablePessoa() {
   db_open().then((db) => {
@@ -38,7 +39,9 @@ async function createTableQuadra() {
       "CREATE TABLE IF NOT EXISTS `Quadra` (" +
         " `ID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
         " `descricao` VARCHAR(280) NULL," +
-        " `endereco` VARCHAR(70) NULL)"
+        " `endereco` VARCHAR(70) NULL," +
+        " `longitude` DECIMAL(3,5) NULL," +
+        " `latitude` DECIMAL(3,5) NULL)"
     );
   });
 }
@@ -212,7 +215,7 @@ async function selectTables(req, res) {
   console.log(" done.");
 }
 
-async function createTables(req, res) {
+export async function createTables(req, res) {
   createTablePessoa();
   createTableJogador();
   // createTableHorario();
@@ -225,8 +228,4 @@ async function createTables(req, res) {
   createTableComentarioPartida();
   createTableComentarioComentario();
   console.log("Database tables was successfully created.");
-}
-
-module.exports = {
-  createTables
 }

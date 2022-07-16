@@ -1,9 +1,28 @@
-const { Router } = require('express');
-const { createUser, getAllUsers, getUser, updateUser, deleteUser } = require('../controller/UserController');
-const { addCourt, getAllCourts, getCourtByID, deleteCourt, updateCourt } = require('../controller/CourtController.js');
-const { insertSport, getAllSports, deleteSport, updateSport } = require('../controller/SportController.js');
+import { Router } from "express";
 
-const router = Router();
+import {
+  createUser,
+  getAllUsers,
+  getUser,
+  updateUser,
+  deleteUser,
+} from "../controller/UserController.js";
+
+import {
+  addCourt,
+  getAllCourts,
+  getCourtByID,
+  deleteCourt,
+  updateCourt,
+} from "../controller/CourtController.js";
+import {
+  insertSport,
+  getAllSports,
+  deleteSport,
+  updateSport,
+} from "../controller/SportController.js";
+
+export const router = Router();
 
 router.get("/", (req, res) => {
   res.json({
@@ -13,8 +32,8 @@ router.get("/", (req, res) => {
 });
 
 // User CRUD
-router.get("/getuser", getUser);
-router.get("/getallusers", getAllUsers);
+router.get("/user", getUser);
+router.get("/users", getAllUsers);
 router.post("/createuser", createUser);
 router.put("/updateuser", updateUser);
 router.delete("/deleteuser", deleteUser);
@@ -31,5 +50,3 @@ router.post("/insertsport", insertSport);
 router.get("/getallsports", getAllSports);
 router.delete("/deletesport", deleteSport);
 router.put("/updatesport", updateSport);
-
-module.exports = router;
