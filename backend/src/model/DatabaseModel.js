@@ -22,7 +22,7 @@ async function createTableQuadra() {
   db_open().then((db) => {
     db.exec(
       "CREATE TABLE IF NOT EXISTS `Quadra` (" +
-        " `ID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+        " `ID` INTEGER PRIMARY KEY NOT NULL," +
         " `descricao` VARCHAR(280) NULL," +
         " `endereco` VARCHAR(70) NULL," +
         " `longitude` DECIMAL(3,5) NULL," +
@@ -35,7 +35,7 @@ async function createTableModalidade() {
   db_open().then((db) => {
     db.exec(
       "CREATE TABLE IF NOT EXISTS `Modalidade` (" +
-        " `ID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+        " `ID` INTEGER PRIMARY KEY NOT NULL," +
         " `nome` VARCHAR(32) NOT NULL," +
         " `descricao` VARCHAR(280) NULL," +
         " `qtdJogadores` INT NULL)"
@@ -47,7 +47,7 @@ async function createTableHorario() {
   db_open().then((db) => {
     db.exec(
       "CREATE TABLE IF NOT EXISTS `Horario` (" +
-      " `ID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+      " `ID` INTEGER PRIMARY KEY NOT NULL," +
       " `dataHoraInicio` VARCHAR(19) NULL," + //"YYYY-MM-DD HH:MM:SS"
       " `dataHoraFim` VARCHAR(19) NULL)"  //"YYYY-MM-DD HH:MM:SS"
     );
@@ -86,7 +86,7 @@ async function createTableInteresse() {
   db_open().then((db) => {
     db.exec(
       "CREATE TABLE IF NOT EXISTS `Interesse` (" +
-        " `ID` INTEGER AUTOINCREMENT NOT NULL," +
+        " `ID` INTEGER NOT NULL," +
         " `Pessoa_CPF` CHAR(11) NOT NULL," +
         " `Horario_ID` INT NOT NULL," +
         " `Modalidade_ID` INT NOT NULL," +
