@@ -41,6 +41,10 @@ const {
   deleteGame,
   getAllGames
 } = require("../controller/GameController.js");
+const {
+  insertPersonGame,
+  deletePersonGame
+} = require("../controller/PersonGameController.js");
 
 const router = Router();
 
@@ -90,5 +94,9 @@ router.get("/interestbycpf", getInterestByCPF);
 router.post("/game", createGame);
 router.delete("/game", deleteGame);
 router.get("/games", getAllGames);
+
+// PersonGame CRUD
+router.post("/persongame", insertPersonGame);
+router.delete("/persongame", deletePersonGame);
 
 module.exports = router;
