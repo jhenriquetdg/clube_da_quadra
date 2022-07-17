@@ -13,10 +13,26 @@
   background-color: red;
 }
 
+.court__card .header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.court__card .header button {
+  font-size: 20px;
+  padding: 5px;
+  background-color: transparent;
+  border: none;
+  color: gray;
+  transition: all 2s;
+}
+
+.court__card .header button:hover{
+  color:yellow;
+} 
 .leaflet-container{
-  height: 100%;
+  height: 300px;
   max-height: 400px;
-  width:100%;
   
   background-color: magenta;
 }

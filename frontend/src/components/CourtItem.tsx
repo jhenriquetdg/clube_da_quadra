@@ -1,20 +1,40 @@
 import { MapContainer } from "react-leaflet/MapContainer";
 import { TileLayer } from "react-leaflet/TileLayer";
-import { useMap } from "react-leaflet/hooks";
-import { Marker, Popup } from "react-leaflet";
+import { Marker, Popup, useMapEvent } from "react-leaflet";
+import { CourtType } from "./CourtContainer";
+
+import { latLng } from "leaflet";
+import { useCallback } from "react";
+import { Pencil } from "phosphor-react";
 
 import "./CourtItem.css";
 
-export default function CourtItem() {
+export interface CourtItemProps {
+  court: CourtType;
+}
+
+export default function CourtItem({ court }: CourtItemProps) {
+  const position = latLng(court.latitude, court.longitude);
+
   return (
     <div className="court__card">
-      <h1>Map</h1>
-      <MapContainer center={[51.505, -0.09]} zoom={13} scrollWheelZoom={true}>
+      <div className="header">
+        <h1>
+          #{court.ID}: {court.descricao}
+        </h1>
+        <button>
+          <Pencil size={50} />
+        </button>
+      </div>
+
+      <p>{court.endereco}</p>
+
+      <MapContainer center={position} zoom={1} scrollWheelZoom={true}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <Marker position={[51.505, -0.09]}>
+        <Marker position={position}>
           <Popup>
             A pretty CSS3 popup. <br /> Easily customizable.
           </Popup>

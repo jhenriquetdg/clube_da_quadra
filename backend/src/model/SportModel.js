@@ -1,6 +1,6 @@
 import { db_open } from "../database/initDB.js";
 
-async function insertSport(sport) {
+export async function insertSport(sport) {
   try {
     var db = await db_open();
     try {
@@ -22,7 +22,27 @@ async function insertSport(sport) {
   }
 }
 
-async function getAllSports() {
+export async function getSport(id) {
+  try {
+    var db = await db_open();
+
+    try {
+      const sport = await db.get("SELECT * FROM Modalidade WHERE ID=?", [id]);
+      return sport;
+    } catch (e) {
+      return {
+        sport: [],
+        error: e,
+      };
+    }
+  } catch (e) {
+    return DB_ERROR_OBJ(e);
+  } finally {
+    db.close();
+  }
+}
+
+export async function getAllSports() {
   try {
     var db = await db_open();
 
@@ -42,14 +62,12 @@ async function getAllSports() {
   }
 }
 
-async function deleteSport(nomeSport) {
+export async function deleteSport(id) {
   try {
     var db = await db_open();
     try {
-      const sport = await db.get("SELECT * FROM Modalidade WHERE nome=?", [
-        nomeSport,
-      ]);
-      await db.get("DELETE FROM Modalidade WHERE nome=?", [nomeSport]);
+      const sport = await db.get("SELECT * FROM Modalidade WHERE ID=?", [id]);
+      await db.get("DELETE FROM Modalidade WHERE ID=?", [id]);
     } catch (e) {
       console.log(sport);
       return sport;
@@ -61,20 +79,20 @@ async function deleteSport(nomeSport) {
   }
 }
 
-async function updateSport(sport) {
+export async function updateSport(sport) {
   try {
     var db = await db_open();
     try {
-      const sportOld = await db.get("SELECT * FROM Modalidade WHERE nome=?", [
-        sport.nome,
+      const sportOld = await db.get("SELECT * FROM Modalidade WHERE ID=?", [
+        sport.id,
       ]);
       await db.run(
-        "UPDATE Modalidade SET nome=?, descricao=?, qtdJogadores=? WHERE nome=?",
-        [sport.nome, sport.descricao, sport.qtdJogadores, sport.nome]
+        "UPDATE Modalidade SET nome=?, descricao=?, qtdJogadores=? WHERE ID=?",
+        [sport.nome, sport.descricao, sport.qtdJogadores, sport.id]
       );
 
-      const sportNew = await db.get("SELECT * FROM Modalidade WHERE nome=?", [
-        sport.nome,
+      const sportNew = await db.get("SELECT * FROM Modalidade WHERE ID=?", [
+        sport.id,
       ]);
 
       return {
@@ -95,6 +113,7 @@ async function updateSport(sport) {
 }
 
 const SportModel = {
+  getSport,
   insertSport,
   getAllSports,
   deleteSport,

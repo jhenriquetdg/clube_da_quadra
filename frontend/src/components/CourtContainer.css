@@ -2,11 +2,9 @@
     width: 100%;
     background-color: blue;
     display: grid;
-    /* grid-template-columns: .45fr .45fr; */
-    /* grid-template-columns: repeat(auto-fill, minmax(25%,1fr)); */
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     margin-top: 10px;
     gap: 50px;
     flex:1;
-
+    padding: 20px;
 }

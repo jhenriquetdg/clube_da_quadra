@@ -10,7 +10,18 @@ export async function insertSport(req, res) {
 }
 
 export async function getSport(req, res) {
-  return null;
+  const sport = await SportModel.getSport(req.body.id);
+  if (sport) {
+    return res.json({
+      statusCode: 200,
+      sport,
+    });
+  } else {
+    return res.json({
+      statusCode: 400,
+      message: "Sport not found",
+    });
+  }
 }
 
 export async function getAllSports(req, res) {
@@ -22,7 +33,7 @@ export async function getAllSports(req, res) {
 }
 
 export async function deleteSport(req, res) {
-  const sport = await SportModel.deleteSport(req.body.nome);
+  const sport = await SportModel.deleteSport(req.body.id);
   return res.json({
     statusCode: 200,
     sport: sport,

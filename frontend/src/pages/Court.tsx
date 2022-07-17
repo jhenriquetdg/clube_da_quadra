@@ -1,32 +1,21 @@
-import { useEffect, useState } from "react";
-import CourtContainer from "../components/CourtContainer";
+import { useState } from "react";
+import CourtContainer, { CourtType } from "../components/CourtContainer";
 import CourtRegister from "../components/CourtRegister";
-import { api } from "../services/api";
 
 import "./Court.css";
 
-export interface CourtType {
-  descricao: string;
-  endereco: string;
-}
-
 export default function Court() {
-  const [data, setData] = useState<CourtType[]>([]);
-
-  async function fetchData() {
-    const response = await api.get("/getallcourts");
-    setData(response.data);
-  }
-
-  useEffect(() => {
-    fetchData();
-    console.log(data);
-  }, []);
-
+  const [currentCourt, setCurrentCourt] = useState<CourtType>({
+    ID: 0,
+    descricao: "",
+    endereco: "",
+    longitude: -5.82,
+    latitude: -35.21,
+  });
   return (
     <div className="court">
-      <CourtContainer courts={data} />
-      <CourtRegister />
+      <CourtRegister court={currentCourt} />
+      <CourtContainer setCourt={setCurrentCourt} />
     </div>
   );
 }

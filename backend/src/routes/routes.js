@@ -16,6 +16,7 @@ import {
   updateCourt,
 } from "../controller/CourtController.js";
 import {
+  getSport,
   insertSport,
   getAllSports,
   deleteSport,
@@ -34,19 +35,20 @@ router.get("/", (req, res) => {
 // User CRUD
 router.get("/user", getUser);
 router.get("/users", getAllUsers);
-router.post("/createuser", createUser);
-router.put("/updateuser", updateUser);
-router.delete("/deleteuser", deleteUser);
+router.post("/user", createUser);
+router.put("/user", updateUser);
+router.delete("/user", deleteUser);
 
 // Court CRUD
-router.post("/insertcourt", addCourt);
-router.get("/getallcourts", getAllCourts);
-router.get("/getcourt", getCourtByID);
-router.delete("/deletecourt", deleteCourt);
-router.put("/updatecourt", updateCourt);
+router.post("/court", addCourt);
+router.get("/courts", getAllCourts);
+router.get("/court", getCourtByID);
+router.delete("/court", deleteCourt);
+router.put("/court", updateCourt);
 
 // Sport CRUD
-router.post("/insertsport", insertSport);
-router.get("/getallsports", getAllSports);
-router.delete("/deletesport", deleteSport);
-router.put("/updatesport", updateSport);
+router.get("/sport", getSport);
+router.post("/sport", insertSport);
+router.get("/sports", getAllSports);
+router.delete("/sport", deleteSport);
+router.put("/sport", updateSport);
