@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(cors());
 
 // createDBTables = true to create Tables / createDBTables = false if tables was already created
-const createDBTables = true;
+const createDBTables = false;
 if (createDBTables) {
   createTables();
 }

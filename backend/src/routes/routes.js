@@ -6,7 +6,7 @@ const {
   getUser,
   updateUser,
   deleteUser,
-} = require("../controller/UserController.js");
+} = require("../controller/PersonController.js");
 
 const {
   addCourt,
@@ -22,6 +22,25 @@ const {
   deleteSport,
   updateSport,
 } = require("../controller/SportController.js");
+const {
+  insertCourtSport,
+  deleteCourtSport
+} = require("../controller/CourtSportController.js");
+const {
+  insertSchedule,
+  deleteSchedule,
+  getAllSchedules
+} = require("../controller/ScheduleController.js");
+const {
+  insertInterest,
+  deleteInterest,
+  getInterestByCPF
+} = require("../controller/InterestController");
+const {
+  createGame,
+  deleteGame,
+  getAllGames
+} = require("../controller/GameController.js");
 
 const router = Router();
 
@@ -52,5 +71,24 @@ router.post("/sport", insertSport);
 router.get("/sports", getAllSports);
 router.delete("/sport", deleteSport);
 router.put("/sport", updateSport);
+
+// CourtSports CRUD
+router.post("/courtsport", insertCourtSport);
+router.delete("/courtsport", deleteCourtSport);
+
+// Schedule CRUD
+router.post("/schedule", insertSchedule);
+router.delete("/schedule", deleteSchedule);
+router.get("/schedules", getAllSchedules);
+
+// Interest CRUD
+router.post("/interest", insertInterest);
+router.delete("/interest", deleteInterest);
+router.get("/interestbycpf", getInterestByCPF);
+
+// Game CRUD
+router.post("/game", createGame);
+router.delete("/game", deleteGame);
+router.get("/games", getAllGames);
 
 module.exports = router;

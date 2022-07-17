@@ -7,20 +7,23 @@ const DB_ERROR_OBJ = (e) => {
     error: e,
     message: "Could not connect to the database",
   };
-};
+}
 
 async function insertPessoa(pessoa) {
   try {
     var db = await db_open();
     try {
       const pessoaResult = await db.run(
-        "INSERT INTO Pessoa (CPF, nome, dataNasc, endereco, genero) VALUES (?,?,?,?,?)",
+        "INSERT INTO Pessoa (CPF, nome, dataNasc, endereco, genero, altura, peso, ladoDominante) VALUES (?,?,?,?,?,?,?,?)",
         [
           pessoa.CPF,
           pessoa.nome,
           pessoa.dataNascimento,
           pessoa.endereco,
           pessoa.genero,
+          pessoa.altura,
+          pessoa.peso,
+          pessoa.ladoDominante
         ]
       );
       return {
@@ -94,13 +97,16 @@ async function updatePessoa(pessoa) {
       ]);
 
       await db.run(
-        "UPDATE Pessoa SET nome=?, dataNasc=?, endereco=?, genero=? WHERE CPF=?",
+        "UPDATE Pessoa SET nome=?, dataNasc=?, endereco=?, genero=?, altura=?, peso=?, ladoDominante=?  WHERE CPF=?",
         [
           pessoa.nome,
           pessoa.dataNascimento,
           pessoa.endereco,
           pessoa.genero,
-          pessoa.CPF,
+          pessoa.altura,
+          pessoa.peso,
+          pessoa.ladoDominante,
+          pessoa.CPF
         ]
       );
 
@@ -132,11 +138,7 @@ async function deletePessoa(CPF) {
     db = await db_open();
     try {
       const pessoa = await db.get("SELECT * FROM Pessoa WHERE CPF=?", [CPF]);
-      await db
-        .get("DELETE FROM Pessoa WHERE CPF=?", [CPF])
-        .then
-        // return(pessoa)
-        ();
+      await db.get("DELETE FROM Pessoa WHERE CPF=?", [CPF]);
     } catch (e) {
       return pessoa;
     }

@@ -10,23 +10,10 @@ async function createTablePessoa() {
         "`dataNasc` DATE NULL," +
         "`endereco` VARCHAR(45) NULL," +
         "`genero` CHAR(1) NULL," +
-        "PRIMARY KEY (`CPF`))"
-    );
-  });
-}
-
-async function createTableJogador() {
-  db_open().then((db) => {
-    db.exec(
-      "CREATE TABLE IF NOT EXISTS `Jogador` (" +
         " `altura` INT(3) NULL," +
-        " `Pessoa_CPF` CHAR(11) PRIMARY KEY NOT NULL," +
         " `peso` DECIMAL(3,2) NULL," +
-        "CONSTRAINT `fk_Jogador_Pessoa`" +
-        " FOREIGN KEY (`Pessoa_CPF`)" +
-        " REFERENCES `Pessoa` (`CPF`)" +
-        " ON DELETE NO ACTION" +
-        " ON UPDATE NO ACTION)"
+        "`ladoDominante` CHAR(1) NULL," +
+        "PRIMARY KEY (`CPF`))"
     );
   });
 }
@@ -99,14 +86,14 @@ async function createTableInteresse() {
   db_open().then((db) => {
     db.exec(
       "CREATE TABLE IF NOT EXISTS `Interesse` (" +
-        " `ID` INT NOT NULL," +
-        " `Jogador_Pessoa_CPF` CHAR(11) NOT NULL," +
+        " `ID` INTEGER AUTOINCREMENT NOT NULL," +
+        " `Pessoa_CPF` CHAR(11) NOT NULL," +
         " `Horario_ID` INT NOT NULL," +
         " `Modalidade_ID` INT NOT NULL," +
-        "PRIMARY KEY (`ID`, `Jogador_Pessoa_CPF`, `Horario_ID`, `Modalidade_ID`)," +
-        "CONSTRAINT `fk_Interesse_Jogador1`" +
-        "    FOREIGN KEY (`Jogador_Pessoa_CPF`)" +
-        "    REFERENCES `Jogador` (`Pessoa_CPF`)" +
+        "PRIMARY KEY (`ID`, `Pessoa_CPF`, `Horario_ID`, `Modalidade_ID`)," +
+        "CONSTRAINT `fk_Interesse_Pessoa1`" +
+        "    FOREIGN KEY (`Pessoa_CPF`)" +
+        "    REFERENCES `Pessoa` (`CPF`)" +
         "    ON DELETE NO ACTION" +
         "    ON UPDATE NO ACTION," +
         "CONSTRAINT `fk_Interesse_Horario1`" +
@@ -144,6 +131,27 @@ async function createTableQuadraModalidade() {
   });
 }
 
+async function createTablePessoaPartida() {
+  db_open().then((db) => {
+    db.exec(
+      "CREATE TABLE IF NOT EXISTS `PessoaPartida` (" +
+        " `Pessoa_CPF` CHAR(11) NOT NULL," +
+        " `Partida_ID` INT NOT NULL," +
+        "PRIMARY KEY (`Pessoa_CPF`, `Partida_ID`)," +
+        "CONSTRAINT `fk_PessoaPartida_Pessoa1`" +
+        "    FOREIGN KEY (`Pessoa_CPF`)" +
+        "    REFERENCES `Pessoa` (`CPF`)" +
+        "    ON DELETE NO ACTION" +
+        "    ON UPDATE NO ACTION," +
+        "CONSTRAINT `fk_PessoaPartida_Partida1`" +
+        "    FOREIGN KEY (`Partida_ID`)" +
+        "    REFERENCES `Partida` (`ID`)" +
+        "    ON DELETE NO ACTION" +
+        "    ON UPDATE NO ACTION)"
+    );
+  });
+}
+
 async function createTableComentario() {
   db_open().then((db) => {
     db.exec(
@@ -160,17 +168,17 @@ async function createTableComentarioPartida() {
     db.exec(
       "CREATE TABLE IF NOT EXISTS `ComentarioPartida` (" +
         " `Comentario_id` INT NOT NULL," +
-        " `Jogador_Pessoa_CPF` CHAR(11) NOT NULL," +
+        " `Pessoa_CPF` CHAR(11) NOT NULL," +
         " `Partida_ID` INT NOT NULL," +
-        "PRIMARY KEY (`Comentario_id`, `Jogador_Pessoa_CPF`)," +
+        "PRIMARY KEY (`Comentario_id`, `Pessoa_CPF`)," +
         "CONSTRAINT `fk_ComentarioPartida_Comentario1`" +
         "    FOREIGN KEY (`Comentario_id`)" +
         "    REFERENCES `Comentario` (`id`)" +
         "    ON DELETE NO ACTION" +
         "    ON UPDATE NO ACTION," +
         "CONSTRAINT `fk_ComentarioPartida_Jogador1`" +
-        "    FOREIGN KEY (`Jogador_Pessoa_CPF`)" +
-        "    REFERENCES `Jogador` (`Pessoa_CPF`)" +
+        "    FOREIGN KEY (`Pessoa_CPF`)" +
+        "    REFERENCES `Pessoa` (`CPF`)" +
         "    ON DELETE NO ACTION" +
         "    ON UPDATE NO ACTION," +
         "CONSTRAINT `fk_ComentarioPartida_Partida1`" +
@@ -215,11 +223,12 @@ async function selectTables(req, res) {
 
 async function createTables(req, res) {
   createTablePessoa();
-  createTableJogador();
+  // createTableJogador();
   createTableHorario();
   createTableQuadra();
   createTableModalidade();
   createTablePartida();
+  createTablePessoaPartida();
   createTableInteresse();
   createTableQuadraModalidade();
   createTableComentario();

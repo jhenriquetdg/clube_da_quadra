@@ -1,8 +1,8 @@
-const UserModel = require("../model/UserModel.js");
+const PersonModel = require("../model/PersonModel.js");
 
 // Create a new User
 async function createUser(req, res) {
-  const newUser = await UserModel.insertPessoa(req.body);
+  const newUser = await PersonModel.insertPessoa(req.body);
   res.json({
     statusCode: 200,
     user: newUser,
@@ -11,7 +11,7 @@ async function createUser(req, res) {
 
 // Return all Users on Database
 async function getAllUsers(req, res) {
-  const users = await UserModel.selectPessoas();
+  const users = await PersonModel.selectPessoas();
   return res.json({
     statusCode: 200,
     users: users,
@@ -20,7 +20,7 @@ async function getAllUsers(req, res) {
 
 // Return an especific User
 async function getUser(req, res) {
-  const user = await UserModel.selectPessoa(req.body.CPF);
+  const user = await PersonModel.selectPessoa(req.body.CPF);
   if (user) {
     return res.json({
       statusCode: 200,
@@ -36,12 +36,12 @@ async function getUser(req, res) {
 
 // Update an especific User
 async function updateUser(req, res) {
-  await UserModel.updatePessoa(req.body);
+  await PersonModel.updatePessoa(req.body);
 }
 
 // Delete an especific User
 async function deleteUser(req, res) {
-  await UserModel.deletePessoa(req.body.CPF);
+  await PersonModel.deletePessoa(req.body.CPF);
 }
 
 module.exports = {
