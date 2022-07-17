@@ -13,14 +13,14 @@ export default function CourtRegister(court: CourtType) {
     const map = useMapEvents({
       click(e) {
         setMarker(e.latlng);
-
-        return (
-          <React.Fragment>
-            <Marker position={marker}></Marker>
-          </React.Fragment>
-        );
       },
     });
+
+    return (
+      <React.Fragment>
+        <Marker position={marker}></Marker>
+      </React.Fragment>
+    );
   }
 
   function LeafletMap() {
