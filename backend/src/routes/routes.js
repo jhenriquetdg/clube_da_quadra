@@ -1,29 +1,29 @@
-import { Router } from "express";
+const { Router } = require("express");
 
-import {
+const {
   createUser,
   getAllUsers,
   getUser,
   updateUser,
   deleteUser,
-} from "../controller/UserController.js";
+} = require("../controller/UserController.js");
 
-import {
+const {
   addCourt,
   getAllCourts,
   getCourtByID,
   deleteCourt,
   updateCourt,
-} from "../controller/CourtController.js";
-import {
+} = require("../controller/CourtController.js");
+const {
   getSport,
   insertSport,
   getAllSports,
   deleteSport,
   updateSport,
-} from "../controller/SportController.js";
+} = require("../controller/SportController.js");
 
-export const router = Router();
+const router = Router();
 
 router.get("/", (req, res) => {
   res.json({
@@ -52,3 +52,5 @@ router.post("/sport", insertSport);
 router.get("/sports", getAllSports);
 router.delete("/sport", deleteSport);
 router.put("/sport", updateSport);
+
+module.exports = router;

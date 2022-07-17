@@ -1,7 +1,6 @@
-// const SportModel = require('../model/SportModel.js');
-import SportModel from "../model/SportModel.js";
+const SportModel = require('../model/SportModel.js');
 
-export async function insertSport(req, res) {
+async function insertSport(req, res) {
   const sportReturn = await SportModel.insertSport(req.body);
   return res.json({
     statusCode: 200,
@@ -9,7 +8,7 @@ export async function insertSport(req, res) {
   });
 }
 
-export async function getSport(req, res) {
+async function getSport(req, res) {
   const sport = await SportModel.getSport(req.body.id);
   if (sport) {
     return res.json({
@@ -24,7 +23,7 @@ export async function getSport(req, res) {
   }
 }
 
-export async function getAllSports(req, res) {
+async function getAllSports(req, res) {
   const sports = await SportModel.getAllSports();
   return res.json({
     statusCode: 200,
@@ -32,7 +31,7 @@ export async function getAllSports(req, res) {
   });
 }
 
-export async function deleteSport(req, res) {
+async function deleteSport(req, res) {
   const sport = await SportModel.deleteSport(req.body.id);
   return res.json({
     statusCode: 200,
@@ -40,10 +39,18 @@ export async function deleteSport(req, res) {
   });
 }
 
-export async function updateSport(req, res) {
+async function updateSport(req, res) {
   const sport = await SportModel.updateSport(req.body);
   return res.json({
     statusCode: 200,
     sport: sport,
   });
+}
+
+module.exports = {
+  insertSport,
+  getSport,
+  getAllSports,
+  deleteSport,
+  updateSport
 }

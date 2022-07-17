@@ -1,6 +1,5 @@
-// const { db_open } = require("../database/initDB");
+const { db_open } = require("../database/initDB");
 
-import { db_open } from "../database/initDB.js";
 
 async function createTablePessoa() {
   db_open().then((db) => {
@@ -21,9 +20,8 @@ async function createTableJogador() {
     db.exec(
       "CREATE TABLE IF NOT EXISTS `Jogador` (" +
         " `altura` INT(3) NULL," +
-        " `Pessoa_CPF` CHAR(11) NOT NULL," +
+        " `Pessoa_CPF` CHAR(11) PRIMARY KEY NOT NULL," +
         " `peso` DECIMAL(3,2) NULL," +
-        "PRIMARY KEY (`Pessoa_CPF`)," +
         "CONSTRAINT `fk_Jogador_Pessoa`" +
         " FOREIGN KEY (`Pessoa_CPF`)" +
         " REFERENCES `Pessoa` (`CPF`)" +
@@ -61,10 +59,10 @@ async function createTableModalidade() {
 async function createTableHorario() {
   db_open().then((db) => {
     db.exec(
-      "CREATE TABLE IF NOT EXISTS `Horario` (",
-      " `ID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,",
-      " `dataHoraInicio` DATETIME NULL,",
-      " `dataHoraFim` DATETIME NULL)"
+      "CREATE TABLE IF NOT EXISTS `Horario` (" +
+      " `ID` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+      " `dataHoraInicio` VARCHAR(19) NULL," + //"YYYY-MM-DD HH:MM:SS"
+      " `dataHoraFim` VARCHAR(19) NULL)"  //"YYYY-MM-DD HH:MM:SS"
     );
   });
 }
@@ -215,10 +213,10 @@ async function selectTables(req, res) {
   console.log(" done.");
 }
 
-export async function createTables(req, res) {
+async function createTables(req, res) {
   createTablePessoa();
   createTableJogador();
-  // createTableHorario();
+  createTableHorario();
   createTableQuadra();
   createTableModalidade();
   createTablePartida();
@@ -228,4 +226,8 @@ export async function createTables(req, res) {
   createTableComentarioPartida();
   createTableComentarioComentario();
   console.log("Database tables was successfully created.");
+}
+
+module.exports = {
+  createTables
 }

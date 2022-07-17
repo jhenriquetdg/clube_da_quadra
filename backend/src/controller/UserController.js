@@ -1,8 +1,7 @@
-// import UserModel from "../model/UserModel.js";
-import UserModel from "../model/UserModel.js";
+const UserModel = require("../model/UserModel.js");
 
 // Create a new User
-export async function createUser(req, res) {
+async function createUser(req, res) {
   const newUser = await UserModel.insertPessoa(req.body);
   res.json({
     statusCode: 200,
@@ -11,7 +10,7 @@ export async function createUser(req, res) {
 }
 
 // Return all Users on Database
-export async function getAllUsers(req, res) {
+async function getAllUsers(req, res) {
   const users = await UserModel.selectPessoas();
   return res.json({
     statusCode: 200,
@@ -20,7 +19,7 @@ export async function getAllUsers(req, res) {
 }
 
 // Return an especific User
-export async function getUser(req, res) {
+async function getUser(req, res) {
   const user = await UserModel.selectPessoa(req.body.CPF);
   if (user) {
     return res.json({
@@ -36,11 +35,19 @@ export async function getUser(req, res) {
 }
 
 // Update an especific User
-export async function updateUser(req, res) {
+async function updateUser(req, res) {
   await UserModel.updatePessoa(req.body);
 }
 
 // Delete an especific User
-export async function deleteUser(req, res) {
+async function deleteUser(req, res) {
   await UserModel.deletePessoa(req.body.CPF);
+}
+
+module.exports = {
+  createUser,
+  getAllUsers,
+  getUser,
+  updateUser,
+  deleteUser
 }

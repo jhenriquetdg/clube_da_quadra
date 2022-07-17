@@ -1,6 +1,6 @@
-import { db_open } from "../database/initDB.js";
+const { db_open } = require("../database/initDB.js");
 
-export async function insertSport(sport) {
+async function insertSport(sport) {
   try {
     var db = await db_open();
     try {
@@ -22,7 +22,7 @@ export async function insertSport(sport) {
   }
 }
 
-export async function getSport(id) {
+async function getSport(id) {
   try {
     var db = await db_open();
 
@@ -42,7 +42,7 @@ export async function getSport(id) {
   }
 }
 
-export async function getAllSports() {
+async function getAllSports() {
   try {
     var db = await db_open();
 
@@ -62,7 +62,7 @@ export async function getAllSports() {
   }
 }
 
-export async function deleteSport(id) {
+async function deleteSport(id) {
   try {
     var db = await db_open();
     try {
@@ -79,7 +79,7 @@ export async function deleteSport(id) {
   }
 }
 
-export async function updateSport(sport) {
+async function updateSport(sport) {
   try {
     var db = await db_open();
     try {
@@ -112,12 +112,10 @@ export async function updateSport(sport) {
   }
 }
 
-const SportModel = {
+module.exports = {
   getSport,
   insertSport,
   getAllSports,
   deleteSport,
-  updateSport,
-};
-
-export default SportModel;
+  updateSport
+}

@@ -1,6 +1,6 @@
-import { db_open } from "../database/initDB.js";
+const { db_open } = require("../database/initDB.js");
 
-export async function insertCourt(court) {
+async function insertCourt(court) {
   try {
     var db = await db_open();
     try {
@@ -22,7 +22,7 @@ export async function insertCourt(court) {
   }
 }
 
-export async function getAllCourts() {
+async function getAllCourts() {
   try {
     var db = await db_open();
     try {
@@ -41,7 +41,7 @@ export async function getAllCourts() {
   }
 }
 
-export async function getCourt(ID) {
+async function getCourt(ID) {
   try {
     var db = await db_open();
     try {
@@ -56,7 +56,7 @@ export async function getCourt(ID) {
   }
 }
 
-export async function deleteCourt(ID) {
+async function deleteCourt(ID) {
   try {
     var db = await db_open();
     try {
@@ -71,7 +71,7 @@ export async function deleteCourt(ID) {
   }
 }
 
-export async function updateCourt(court) {
+async function updateCourt(court) {
   try {
     var db = await db_open();
     try {
@@ -105,12 +105,10 @@ export async function updateCourt(court) {
   }
 }
 
-const CourtModel = {
+module.exports = {
   insertCourt,
   getAllCourts,
   getCourt,
   deleteCourt,
-  updateCourt,
+  updateCourt
 };
-
-export default CourtModel;

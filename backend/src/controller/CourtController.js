@@ -1,6 +1,6 @@
-import CourtModel from "../model/CourtModel.js";
+const CourtModel = require("../model/CourtModel.js");
 
-export async function addCourt(req, res) {
+async function addCourt(req, res) {
   const court = await CourtModel.insertCourt(req.body);
   return res.json({
     statusCode: 200,
@@ -8,7 +8,7 @@ export async function addCourt(req, res) {
   });
 }
 
-export async function getCourtByID(req, res) {
+async function getCourtByID(req, res) {
   const court = await CourtModel.getCourt(req.body.ID);
   return res.json({
     statusCode: 200,
@@ -16,7 +16,7 @@ export async function getCourtByID(req, res) {
   });
 }
 
-export async function getAllCourts(req, res) {
+async function getAllCourts(req, res) {
   const courts = await CourtModel.getAllCourts();
   return res.json({
     statusCode: 200,
@@ -24,11 +24,11 @@ export async function getAllCourts(req, res) {
   });
 }
 
-export async function getAllCourtsByCity(req, res) {
+async function getAllCourtsByCity(req, res) {
   return null;
 }
 
-export async function deleteCourt(req, res) {
+async function deleteCourt(req, res) {
   const returnCourt = await CourtModel.deleteCourt(req.body.ID);
   return res.json({
     statusCode: 200,
@@ -36,7 +36,7 @@ export async function deleteCourt(req, res) {
   });
 }
 
-export async function updateCourt(req, res) {
+async function updateCourt(req, res) {
   const returnCourt = await CourtModel.updateCourt(req.body);
   return res.json({
     statusCode: 200,
@@ -44,12 +44,10 @@ export async function updateCourt(req, res) {
   });
 }
 
-const CourtController = {
+module.exports = {
   addCourt,
   getCourtByID,
   getAllCourts,
   deleteCourt,
   updateCourt,
 };
-
-export default CourtController;

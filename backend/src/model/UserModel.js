@@ -1,4 +1,4 @@
-import { db_open } from "../database/initDB.js";
+const { db_open } = require("../database/initDB.js");
 
 const DB_ERROR_OBJ = (e) => {
   return {
@@ -9,7 +9,7 @@ const DB_ERROR_OBJ = (e) => {
   };
 };
 
-export async function insertPessoa(pessoa) {
+async function insertPessoa(pessoa) {
   try {
     var db = await db_open();
     try {
@@ -40,7 +40,7 @@ export async function insertPessoa(pessoa) {
   }
 }
 
-export async function selectPessoas() {
+async function selectPessoas() {
   try {
     var db = await db_open();
 
@@ -60,7 +60,7 @@ export async function selectPessoas() {
   }
 }
 
-export async function selectPessoa(CPF) {
+async function selectPessoa(CPF) {
   try {
     var db = await db_open();
     try {
@@ -84,7 +84,7 @@ export async function selectPessoa(CPF) {
   }
 }
 
-export async function updatePessoa(pessoa) {
+async function updatePessoa(pessoa) {
   var db;
   try {
     db = await db_open();
@@ -126,7 +126,7 @@ export async function updatePessoa(pessoa) {
   }
 }
 
-export async function deletePessoa(CPF) {
+async function deletePessoa(CPF) {
   var db;
   try {
     db = await db_open();
@@ -147,11 +147,10 @@ export async function deletePessoa(CPF) {
   }
 }
 
-const UserModel = {
+module.exports = {
   deletePessoa,
   updatePessoa,
   selectPessoa,
   selectPessoas,
-  insertPessoa,
+  insertPessoa
 };
-export default UserModel;
