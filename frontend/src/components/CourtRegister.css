@@ -8,17 +8,35 @@
 .court__register{
     display: flex;
     flex-direction: row;
-    width: 30%;
-    height: 50%;
-    background-color: #fff;
-    padding: 20px;
-    margin-left: 20px;
-    position: sticky;
-    top: 0;
-    
+
+    margin: 32px 0;
+    width: 40%;
+
+    background-color: rgba(255,255,255,0.5);
+    border-radius: 5px;
+    padding: 16px;
 }
 
 .court__register fieldset{
     display: flex;
     flex-direction: column;
+
+    border: 0;
+    color: #fff;
+    padding-right: 8px;
+}
+
+.court__register fieldset legend {
+    font-size: 16px;
+    margin: 0 auto;
+}
+
+.court__register fieldset label {
+    margin-top: 16px;
+}
+
+.court__register fieldset input {
+    padding: 8px 4px;
+    border: 1px solid #111;
+    border-radius: 3px;
 }

@@ -1,30 +1,48 @@
 .login__form{
-    height: 500px;
-    background-color: aquamarine;
-    margin: 50px auto;
-    width: 80vw;
-    padding: 20px;
+    border-radius: 5px;
+    width: 30%;
+    height: 50%;
+    padding: 32px 16px;
+    background-color: rgba(255,255,255,0.5);
 }
 
 .login__form fieldset{
-    font-size: 40px;
-    border: #000 solid 5px;
-    padding: 20px;
+    color: #fff;
+
+    border: 0;
+
     display: flex;
     flex-direction: column;
 }
 
+.login__form fieldset legend {
+    font-size: 24px;
+    text-align: center;
+}
+
+.login__form fieldset label {
+    font-size: 16px;
+    margin: 8px 0 4px 0;
+}
+
 .login__form fieldset input {
-    height: 40px;
-    margin-bottom: 20px;
+    border: 0;
+    border-radius: 3px;
+    padding: 8px 4px;
 }
 
 .login__form fieldset button {
-    height: 50px;
-    font-size: 40px;
-    background-color: cadetblue;
+    font-size: 16px;
+    border: 1px solid rgb(166, 69, 0);
+    border-radius: 5px;
+    margin: 32px 0 8px 0;
+    color: #fff;
+    background-color: rgb(255, 106, 0);
+    cursor: pointer;
+    padding: 16px 0;
 }
+
 .login__form fieldset button:hover {
-    background-color: blueviolet;
+    background-color: rgba(255, 106, 0, 0.7);
 }
 

@@ -27,7 +27,7 @@ export default function CourtRegister(court: CourtType) {
     const mapCentre = new LatLng(-5.82, -35.21);
 
     return (
-      <MapContainer center={mapCentre} zoom={13}>
+      <MapContainer center={mapCentre} zoom={10}>
         <TileLayer
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

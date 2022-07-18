@@ -1,0 +1,13 @@
+.login_form .container {
+    height: 100%;
+    width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.login_form .container h1.welcome-text {
+    padding-top: 64px;
+    color: #fff;
+}

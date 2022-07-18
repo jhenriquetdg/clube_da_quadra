@@ -1,9 +1,11 @@
 .court__container{
     width: 100%;
-    background-color: blue;
+    background-color: rgba(255,255,255,0.5);
+    border-radius: 5px;
+
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    margin-top: 10px;
+    margin: 32px 0;
     gap: 50px;
     flex:1;
     padding: 20px;

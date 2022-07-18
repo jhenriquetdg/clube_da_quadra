@@ -23,11 +23,11 @@ export default function CourtItem({ court }: CourtItemProps) {
           #{court.ID}: {court.descricao}
         </h1>
         <button>
-          <Pencil size={50} />
+          <Pencil size={20} />
         </button>
       </div>
 
-      <p>{court.endereco}</p>
+      <p className="city-name">{court.endereco}</p>
 
       <MapContainer center={position} zoom={1} scrollWheelZoom={true}>
         <TileLayer

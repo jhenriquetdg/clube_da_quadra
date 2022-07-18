@@ -5,7 +5,7 @@ export default function RegisterForm() {
     <div className="register__form">
       <form action="">
         <fieldset>
-          <legend>Register</legend>
+          <legend>Registro</legend>
 
           <label htmlFor="CPF">CPF</label>
           <input id="CPF" type="text" />

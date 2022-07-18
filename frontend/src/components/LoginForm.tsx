@@ -15,8 +15,7 @@ export default function LoginForm() {
           <label htmlFor="password">Senha</label>
           <input id="password" type="password" value={CPF} />
 
-          <button type="submit">Enviar</button>
-          <button type="submit">Cadastre-se</button>
+          <button type="submit">Logar</button>
         </fieldset>
       </form>
     </div>
