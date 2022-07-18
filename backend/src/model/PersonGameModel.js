@@ -16,7 +16,7 @@ async function insertPersonGame(personGame) {
           const personGameResult = await db.run(
             "INSERT INTO PessoaPartida (Pessoa_CPF, Partida_ID) VALUES (?,?)",
             [
-              personGame.pessoa_id,
+              personGame.pessoa_cpf,
               personGame.partida_id
             ]
           );

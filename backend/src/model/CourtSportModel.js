@@ -10,7 +10,6 @@ const DB_ERROR_OBJ = (e) => {
   }
 
 async function insertCourtSport(courtID, sportID){
-    console.log(courtID, sportID);
     try {
         var db = await db_open();
         try {

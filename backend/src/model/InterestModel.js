@@ -21,7 +21,6 @@ async function insertInterest(interest) {
                 interest.modalidade_id
             ]
           );
-          console.log(interestResult);
           return {
             interest: interestResult,
           };
@@ -75,13 +74,13 @@ async function getInterestByCPF(interest) {
         } catch (e) {
             return {
             statusCode: 400,
-            pessoa: {},
+            interest: {},
             };
         }
     } catch (e) {
     return {
         statusCode: 500,
-        pessoa: {},
+        interest: {},
         message: "Could not connect to the database",
         error: e,
     };
@@ -90,8 +89,38 @@ async function getInterestByCPF(interest) {
     }
 }
 
+async function getAllInterested(interest) {
+  try {
+    var db = await db_open();
+    try {
+      const peopleInterest = await db.all("SELECT Pessoa.CPF, Pessoa.nome, Modalidade.ID as Modalidade_ID, Modalidade.nome as Modalidade_Nome, Modalidade.qtdJogadores, Horario.ID as Horario_ID, Horario.dataHoraInicio, Horario.dataHoraFim FROM Pessoa, Interesse, Horario, Modalidade WHERE Horario.ID=? AND Modalidade.ID=?",
+      [
+        interest.horario_id,
+        interest.modalidade_id,
+      ]);
+      return peopleInterest;
+      
+    } catch (e) {
+      return {
+        statusCode: 400,
+        error: e
+      }
+    }
+  } catch(e) {
+    return {
+      statusCode: 500,
+      interest: {},
+      message: "Could not connect to the database",
+      error: e,
+    }
+  } finally {
+    db.close();
+  }
+}
+
 module.exports = {
     insertInterest,
     deleteInterest,
-    getInterestByCPF
+    getInterestByCPF,
+    getAllInterested
 }

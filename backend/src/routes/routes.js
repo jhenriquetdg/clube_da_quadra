@@ -34,7 +34,8 @@ const {
 const {
   insertInterest,
   deleteInterest,
-  getInterestByCPF
+  getInterestByCPF,
+  getAllInterested
 } = require("../controller/InterestController");
 const {
   createGame,
@@ -89,6 +90,7 @@ router.get("/schedules", getAllSchedules);
 router.post("/interest", insertInterest);
 router.delete("/interest", deleteInterest);
 router.get("/interestbycpf", getInterestByCPF);
+router.get("/allinterested", getAllInterested);
 
 // Game CRUD
 router.post("/game", createGame);
