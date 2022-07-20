@@ -7,23 +7,24 @@ const DB_ERROR_OBJ = (e) => {
     error: e,
     message: "Could not connect to the database",
   };
-}
+};
 
 async function insertPessoa(pessoa) {
   try {
     var db = await db_open();
     try {
       const pessoaResult = await db.run(
-        "INSERT INTO Pessoa (CPF, nome, dataNasc, endereco, genero, altura, peso, ladoDominante) VALUES (?,?,?,?,?,?,?,?)",
+        "INSERT INTO Pessoa (CPF, nome, dataNasc, genero, altura, peso, email, senha, ladoDominante) VALUES (?,?,?,?,?,?,?,?,?)",
         [
           pessoa.CPF,
           pessoa.nome,
           pessoa.dataNascimento,
-          pessoa.endereco,
           pessoa.genero,
           pessoa.altura,
           pessoa.peso,
-          pessoa.ladoDominante
+          pessoa.email,
+          pessoa.senha,
+          pessoa.ladoDominante,
         ]
       );
       return {
@@ -97,16 +98,17 @@ async function updatePessoa(pessoa) {
       ]);
 
       await db.run(
-        "UPDATE Pessoa SET nome=?, dataNasc=?, endereco=?, genero=?, altura=?, peso=?, ladoDominante=?  WHERE CPF=?",
+        "UPDATE Pessoa SET nome=?, dataNasc=?, genero=?, altura=?, peso=?, email=?, senha=?, ladoDominante=?  WHERE CPF=?",
         [
           pessoa.nome,
           pessoa.dataNascimento,
-          pessoa.endereco,
           pessoa.genero,
           pessoa.altura,
           pessoa.peso,
+          pessoa.email,
+          pessoa.senha,
           pessoa.ladoDominante,
-          pessoa.CPF
+          pessoa.CPF,
         ]
       );
 
@@ -154,5 +156,5 @@ module.exports = {
   updatePessoa,
   selectPessoa,
   selectPessoas,
-  insertPessoa
+  insertPessoa,
 };

@@ -41,11 +41,11 @@ async function getAllCourts() {
   }
 }
 
-async function getCourt(ID) {
+async function getCourt(id) {
   try {
     var db = await db_open();
     try {
-      return await db.get("SELECT * FROM Quadra WHERE ID=?", [ID]);
+      return await db.get("SELECT * FROM Quadra WHERE id=?", [id]);
     } catch (e) {
       return { error: e };
     }
@@ -56,11 +56,11 @@ async function getCourt(ID) {
   }
 }
 
-async function deleteCourt(ID) {
+async function deleteCourt(id) {
   try {
     var db = await db_open();
     try {
-      return await db.get("DELETE FROM Quadra WHERE ID=?", [ID]);
+      return await db.get("DELETE FROM Quadra WHERE id=?", [id]);
     } catch (e) {
       return { error: e };
     }
@@ -75,21 +75,21 @@ async function updateCourt(court) {
   try {
     var db = await db_open();
     try {
-      const oldCourt = await db.get("SELECT * FROM Quadra WHERE ID=?", [
-        court.ID,
+      const oldCourt = await db.get("SELECT * FROM Quadra WHERE id=?", [
+        court.id,
       ]);
       await db.run(
-        "UPDATE Quadra SET descricao=?, endereco=?, longitude=?, latitude=? WHERE ID=?",
+        "UPDATE Quadra SET descricao=?, endereco=?, longitude=?, latitude=? WHERE id=?",
         [
           court.descricao,
           court.endereco,
           court.longitude,
           court.latitude,
-          court.ID,
+          court.id,
         ]
       );
-      const newCourt = await db.get("SELECT * FROM Quadra WHERE ID=?", [
-        court.ID,
+      const newCourt = await db.get("SELECT * FROM Quadra WHERE id=?", [
+        court.id,
       ]);
       return {
         oldCourt,
@@ -110,5 +110,5 @@ module.exports = {
   getAllCourts,
   getCourt,
   deleteCourt,
-  updateCourt
+  updateCourt,
 };

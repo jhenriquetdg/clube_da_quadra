@@ -27,7 +27,7 @@ async function getSport(id) {
     var db = await db_open();
 
     try {
-      const sport = await db.get("SELECT * FROM Modalidade WHERE ID=?", [id]);
+      const sport = await db.get("SELECT * FROM Modalidade WHERE id=?", [id]);
       return sport;
     } catch (e) {
       return {
@@ -66,8 +66,8 @@ async function deleteSport(id) {
   try {
     var db = await db_open();
     try {
-      const sport = await db.get("SELECT * FROM Modalidade WHERE ID=?", [id]);
-      await db.get("DELETE FROM Modalidade WHERE ID=?", [id]);
+      const sport = await db.get("SELECT * FROM Modalidade WHERE id=?", [id]);
+      await db.get("DELETE FROM Modalidade WHERE id=?", [id]);
     } catch (e) {
       console.log(sport);
       return sport;
@@ -83,15 +83,15 @@ async function updateSport(sport) {
   try {
     var db = await db_open();
     try {
-      const sportOld = await db.get("SELECT * FROM Modalidade WHERE ID=?", [
+      const sportOld = await db.get("SELECT * FROM Modalidade WHERE id=?", [
         sport.id,
       ]);
       await db.run(
-        "UPDATE Modalidade SET nome=?, descricao=?, qtdJogadores=? WHERE ID=?",
+        "UPDATE Modalidade SET nome=?, descricao=?, qtdJogadores=? WHERE id=?",
         [sport.nome, sport.descricao, sport.qtdJogadores, sport.id]
       );
 
-      const sportNew = await db.get("SELECT * FROM Modalidade WHERE ID=?", [
+      const sportNew = await db.get("SELECT * FROM Modalidade WHERE id=?", [
         sport.id,
       ]);
 
@@ -117,5 +117,5 @@ module.exports = {
   insertSport,
   getAllSports,
   deleteSport,
-  updateSport
-}
+  updateSport,
+};

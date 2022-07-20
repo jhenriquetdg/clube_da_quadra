@@ -11,7 +11,7 @@ const {
 const {
   addCourt,
   getAllCourts,
-  getCourtByID,
+  getCourtById,
   deleteCourt,
   updateCourt,
 } = require("../controller/CourtController.js");
@@ -24,27 +24,27 @@ const {
 } = require("../controller/SportController.js");
 const {
   insertCourtSport,
-  deleteCourtSport
+  deleteCourtSport,
 } = require("../controller/CourtSportController.js");
 const {
   insertSchedule,
   deleteSchedule,
-  getAllSchedules
+  getAllSchedules,
 } = require("../controller/ScheduleController.js");
 const {
   insertInterest,
   deleteInterest,
   getInterestByCPF,
-  getAllInterested
+  getAllInterested,
 } = require("../controller/InterestController");
 const {
   createGame,
   deleteGame,
-  getAllGames
+  getAllGames,
 } = require("../controller/GameController.js");
 const {
   insertPersonGame,
-  deletePersonGame
+  deletePersonGame,
 } = require("../controller/PersonGameController.js");
 
 const router = Router();
@@ -66,7 +66,7 @@ router.delete("/user", deleteUser);
 // Court CRUD
 router.post("/court", addCourt);
 router.get("/courts", getAllCourts);
-router.get("/court", getCourtByID);
+router.get("/court", getCourtById);
 router.delete("/court", deleteCourt);
 router.put("/court", updateCourt);
 

@@ -8,8 +8,8 @@ async function addCourt(req, res) {
   });
 }
 
-async function getCourtByID(req, res) {
-  const court = await CourtModel.getCourt(req.body.ID);
+async function getCourtById(req, res) {
+  const court = await CourtModel.getCourt(req.body.id);
   return res.json({
     statusCode: 200,
     court: court,
@@ -29,7 +29,7 @@ async function getAllCourtsByCity(req, res) {
 }
 
 async function deleteCourt(req, res) {
-  const returnCourt = await CourtModel.deleteCourt(req.body.ID);
+  const returnCourt = await CourtModel.deleteCourt(req.body.id);
   return res.json({
     statusCode: 200,
     court: returnCourt,
@@ -46,7 +46,7 @@ async function updateCourt(req, res) {
 
 module.exports = {
   addCourt,
-  getCourtByID,
+  getCourtById,
   getAllCourts,
   deleteCourt,
   updateCourt,
