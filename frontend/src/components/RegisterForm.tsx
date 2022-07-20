@@ -1,10 +1,36 @@
 import "./RegisterForm.css";
 import axios, { AxiosError } from "axios";
 import { useForm } from "react-hook-form";
-
+import { generate, validate } from "gerador-validador-cpf";
+import { faker } from "@faker-js/faker";
+import { api } from "../services/api";
 export default function RegisterForm() {
     const { register, handleSubmit, formState, getValues, setValue } =
         useForm();
+
+    var dataNasc_aux = faker.date.past(50, "YYYY-MM-DD");
+    const dataNasc =
+        dataNasc_aux.getDay().toString() +
+        "/" +
+        dataNasc_aux.getMonth().toString() +
+        "/" +
+        dataNasc_aux.getFullYear().toString();
+
+    setValue("CPF", generate());
+    setValue("senha", faker.internet.password());
+    setValue("email", faker.internet.email());
+    setValue("nome", faker.name.findName());
+    setValue("dataNasc", dataNasc);
+    setValue("genero", faker.helpers.arrayElement(["M", "F"]));
+    setValue("altura", faker.datatype.number({ min: 120, max: 200 }));
+    setValue("peso", faker.datatype.number({ min: 50, max: 200 }));
+    setValue("ladoDominante", faker.helpers.arrayElement(["E", "D", "A"]));
+    // setValue("CEP", faker.internet.email);
+    // setValue("logradouro", faker.internet.email );
+    setValue("numero", faker.datatype.number());
+    // setValue("complemento", faker.internet.email );
+    // setValue("bairro", faker.internet.email );
+    // setValue("uf", faker.internet.email );
 
     var x = navigator.geolocation.getCurrentPosition((position) => {
         setValue("latitude", position.coords.latitude);
@@ -13,12 +39,11 @@ export default function RegisterForm() {
 
     async function fetchCEP(e: any) {
         var CEP = e.target.value.replace(/\D/g, "");
-        console.log(CEP);
         if (CEP.length === 8) {
             const response = await axios.get(
                 `https://viacep.com.br/ws/${e.target.value}/json/`
             );
-
+            setValue("CEP", response.data.cep);
             setValue("logradouro", response.data.logradouro);
             setValue("numero", response.data.numero);
             setValue("complemento", response.data.complemento);
@@ -28,6 +53,8 @@ export default function RegisterForm() {
     }
 
     function envioFormulario(data: any) {
+        api.post("/user", data);
+        // api.post("/address", data);
         console.log(data);
     }
 
@@ -83,10 +110,13 @@ export default function RegisterForm() {
 
                     <label htmlFor="CEP">CEP</label>
                     <input
-                        {...register("CEP")}
+                        {...(register("CEP"), { required: true })}
                         type="text"
                         onChange={fetchCEP}
                     />
+                    {formState.errors.CEP && (
+                        <span className="error">Esse campo é obrigatório</span>
+                    )}
 
                     <label htmlFor="logradouro">Logradouro</label>
                     <input {...register("logradouro")} type="text" />
@@ -107,14 +137,14 @@ export default function RegisterForm() {
                     <input
                         {...register("longitude")}
                         type="number"
-                        step={0.0001}
+                        step={0.0000001}
                     />
 
                     <label htmlFor="latitude">Latitude</label>
                     <input
                         {...register("latitude")}
                         type="number"
-                        step={0.0001}
+                        step={0.0000001}
                     />
 
                     <button type="submit">Enviar</button>
