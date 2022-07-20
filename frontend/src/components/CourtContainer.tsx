@@ -1,21 +1,22 @@
 import { useEffect, useState } from "react";
+import { CourtType } from "../pages/Court";
 import { api } from "../services/api";
 import "./CourtContainer.css";
 import CourtItem from "./CourtItem";
-
-export interface CourtType {
-  ID: number;
-  descricao: string;
-  endereco: string;
-  longitude: number;
-  latitude: number;
-}
 
 interface CourtData {
   courts: CourtType[];
 }
 
-export default function CourtContainer() {
+interface CourtContainerProps {
+  currentCourt: CourtType;
+  setCurrentCourt: (court: CourtType) => void;
+}
+
+export default function CourtContainer({
+  currentCourt,
+  setCurrentCourt,
+}: CourtContainerProps) {
   const [courts, setCourts] = useState<CourtType[]>([]);
 
   async function fetchData() {
@@ -28,6 +29,7 @@ export default function CourtContainer() {
     fetchData();
   }, []);
 
+  console.log("Container...s");
   return (
     <div className="court__container">
       {!courts && <p>Carregando ...</p>}

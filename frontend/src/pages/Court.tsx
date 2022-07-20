@@ -1,8 +1,16 @@
 import { useState } from "react";
-import CourtContainer, { CourtType } from "../components/CourtContainer";
+import CourtContainer from "../components/CourtContainer";
 import CourtRegister from "../components/CourtRegister";
 
 import "./Court.css";
+
+export interface CourtType {
+  ID: number;
+  descricao: string;
+  endereco: string;
+  longitude: number;
+  latitude: number;
+}
 
 export default function Court() {
   const [currentCourt, setCurrentCourt] = useState<CourtType>({
@@ -14,8 +22,11 @@ export default function Court() {
   });
   return (
     <div className="court">
-      <CourtRegister court={currentCourt} />
-      <CourtContainer setCourt={setCurrentCourt} />
+      <CourtRegister currentCourt={currentCourt} />
+      <CourtContainer
+        currentCourt={currentCourt}
+        setCurrentCourt={setCurrentCourt}
+      />
     </div>
   );
 }

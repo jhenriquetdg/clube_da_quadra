@@ -46,3 +46,12 @@
 .register__form fieldset button:hover {
     background-color: rgba(255, 106, 0, 0.7);
 }
+
+.register__form .error {
+    margin-left: 1rem;
+    color:red;
+    background-color: yellow;
+    padding: 4px;
+    border-radius: 15px;
+    vertical-align: middle;
+}
