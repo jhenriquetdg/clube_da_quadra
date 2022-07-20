@@ -16,7 +16,16 @@ async function deletePersonGame(req, res) {
     });
 }
 
+async function getAllPersonGame(req, res) {
+    const personGameReturn = await PersonGameModel.getAllPersonGame();
+    return res.json({
+        statusCode: 200,
+        personGameReturn
+    })
+}
+
 module.exports = {
     insertPersonGame,
-    deletePersonGame
+    deletePersonGame,
+    getAllPersonGame
 }

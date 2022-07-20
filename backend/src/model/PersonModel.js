@@ -49,7 +49,7 @@ async function selectPessoas() {
     var db = await db_open();
 
     try {
-      const pessoas = await db.all("SELECT * FROM Pessoa");
+      const pessoas = await db.all("SELECT Pessoa.CPF, Pessoa.nome, Pessoa.dataNasc, Pessoa.genero FROM Pessoa");
       return pessoas;
     } catch (e) {
       return {
@@ -89,9 +89,8 @@ async function selectPessoa(CPF) {
 }
 
 async function updatePessoa(pessoa) {
-  var db;
   try {
-    db = await db_open();
+    var db = await db_open();
     try {
       const pessoaOld = await db.get("SELECT * FROM Pessoa WHERE CPF=?", [
         pessoa.CPF,

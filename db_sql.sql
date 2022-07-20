@@ -17,48 +17,67 @@ USE `mydb` ;
 -- -----------------------------------------------------
 -- Table `mydb`.`Pessoa`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`Pessoa` ;
+
 CREATE TABLE IF NOT EXISTS `mydb`.`Pessoa` (
   `CPF` CHAR(11) NOT NULL,
   `nome` VARCHAR(45) NULL,
   `dataNasc` DATE NULL,
-  `endereco` VARCHAR(45) NULL,
   `genero` CHAR(1) NULL,
-  `Jogadorcol` VARCHAR(45) NULL,
+  `altura` INT(3) NULL,
+  `peso` DECIMAL(3,2) NULL,
+  `email` VARCHAR(45) NULL,
+  `senha` VARCHAR(12) NULL,
+  `ladoDominante` CHAR(1) NULL,
   PRIMARY KEY (`CPF`))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Jogador`
+-- Table `mydb`.`Endreco`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Jogador` (
-  `altura` INT(3) NULL,
-  `Pessoa_CPF` CHAR(11) NOT NULL,
-  `peso` DECIMAL(3,2) NULL,
-  `Jogadorcol` VARCHAR(45) NULL,
-  PRIMARY KEY (`Pessoa_CPF`),
-  CONSTRAINT `fk_Jogador_Pessoa`
-    FOREIGN KEY (`Pessoa_CPF`)
-    REFERENCES `mydb`.`Pessoa` (`CPF`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+DROP TABLE IF EXISTS `mydb`.`Endreco` ;
+
+CREATE TABLE IF NOT EXISTS `mydb`.`Endreco` (
+  `idEndreco` INT NOT NULL,
+  `CEP` VARCHAR(8) NULL,
+  `numero` VARCHAR(9) NULL,
+  `complemento` VARCHAR(45) NULL,
+  `UF` CHAR(2) NULL,
+  `logradouro` VARCHAR(45) NULL,
+  `bairro` VARCHAR(45) NULL,
+  `localidade` VARCHAR(45) NULL,
+  `latitude` DECIMAL(4,4) NULL,
+  `longitude` DECIMAL(4,4) NULL,
+  PRIMARY KEY (`idEndreco`))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
 -- Table `mydb`.`Quadra`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`Quadra` ;
+
 CREATE TABLE IF NOT EXISTS `mydb`.`Quadra` (
   `ID` INT NOT NULL,
   `descricao` VARCHAR(280) NULL,
-  `endereco` VARCHAR(70) NULL,
-  PRIMARY KEY (`ID`))
+  `Endreco_idEndreco` INT NOT NULL,
+  PRIMARY KEY (`ID`, `Endreco_idEndreco`),
+  CONSTRAINT `fk_Quadra_Endreco1`
+    FOREIGN KEY (`Endreco_idEndreco`)
+    REFERENCES `mydb`.`Endreco` (`idEndreco`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+CREATE INDEX `fk_Quadra_Endreco1_idx` ON `mydb`.`Quadra` (`Endreco_idEndreco` ASC) VISIBLE;
 
 
 -- -----------------------------------------------------
 -- Table `mydb`.`Modalidade`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`Modalidade` ;
+
 CREATE TABLE IF NOT EXISTS `mydb`.`Modalidade` (
   `ID` INT NOT NULL,
   `descricao` VARCHAR(280) NULL,
@@ -70,6 +89,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `mydb`.`Horario`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`Horario` ;
+
 CREATE TABLE IF NOT EXISTS `mydb`.`Horario` (
   `ID` INT NOT NULL,
   `dataHoraInicio` DATETIME NULL,
@@ -81,15 +102,15 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `mydb`.`Partida`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`Partida` ;
+
 CREATE TABLE IF NOT EXISTS `mydb`.`Partida` (
   `ID` INT NOT NULL,
   `Horario_ID` INT NOT NULL,
   `Quadra_ID` INT NOT NULL,
   `Modalidade_ID` INT NOT NULL,
+  `status` INT NULL,
   PRIMARY KEY (`ID`),
-  INDEX `fk_Partida_Horario1_idx` (`Horario_ID` ASC) VISIBLE,
-  INDEX `fk_Partida_Quadra1_idx` (`Quadra_ID` ASC) VISIBLE,
-  INDEX `fk_Partida_Modalidade1_idx` (`Modalidade_ID` ASC) VISIBLE,
   CONSTRAINT `fk_Partida_Horario1`
     FOREIGN KEY (`Horario_ID`)
     REFERENCES `mydb`.`Horario` (`ID`)
@@ -107,24 +128,24 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Partida` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+CREATE INDEX `fk_Partida_Horario1_idx` ON `mydb`.`Partida` (`Horario_ID` ASC) VISIBLE;
+
+CREATE INDEX `fk_Partida_Quadra1_idx` ON `mydb`.`Partida` (`Quadra_ID` ASC) VISIBLE;
+
+CREATE INDEX `fk_Partida_Modalidade1_idx` ON `mydb`.`Partida` (`Modalidade_ID` ASC) VISIBLE;
+
 
 -- -----------------------------------------------------
 -- Table `mydb`.`Interesse`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`Interesse` ;
+
 CREATE TABLE IF NOT EXISTS `mydb`.`Interesse` (
   `ID` INT NOT NULL,
-  `Jogador_Pessoa_CPF` CHAR(11) NOT NULL,
   `Horario_ID` INT NOT NULL,
   `Modalidade_ID` INT NOT NULL,
-  PRIMARY KEY (`ID`, `Jogador_Pessoa_CPF`, `Horario_ID`, `Modalidade_ID`),
-  INDEX `fk_Interesse_Jogador1_idx` (`Jogador_Pessoa_CPF` ASC) VISIBLE,
-  INDEX `fk_Interesse_Horario1_idx` (`Horario_ID` ASC) VISIBLE,
-  INDEX `fk_Interesse_Modalidade1_idx` (`Modalidade_ID` ASC) VISIBLE,
-  CONSTRAINT `fk_Interesse_Jogador1`
-    FOREIGN KEY (`Jogador_Pessoa_CPF`)
-    REFERENCES `mydb`.`Jogador` (`Pessoa_CPF`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+  `Pessoa_CPF` CHAR(11) NOT NULL,
+  PRIMARY KEY (`ID`, `Horario_ID`, `Modalidade_ID`, `Pessoa_CPF`),
   CONSTRAINT `fk_Interesse_Horario1`
     FOREIGN KEY (`Horario_ID`)
     REFERENCES `mydb`.`Horario` (`ID`)
@@ -134,19 +155,30 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Interesse` (
     FOREIGN KEY (`Modalidade_ID`)
     REFERENCES `mydb`.`Modalidade` (`ID`)
     ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Interesse_Pessoa1`
+    FOREIGN KEY (`Pessoa_CPF`)
+    REFERENCES `mydb`.`Pessoa` (`CPF`)
+    ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+CREATE INDEX `fk_Interesse_Horario1_idx` ON `mydb`.`Interesse` (`Horario_ID` ASC) VISIBLE;
+
+CREATE INDEX `fk_Interesse_Modalidade1_idx` ON `mydb`.`Interesse` (`Modalidade_ID` ASC) VISIBLE;
+
+CREATE INDEX `fk_Interesse_Pessoa1_idx` ON `mydb`.`Interesse` (`Pessoa_CPF` ASC) VISIBLE;
+
 
 -- -----------------------------------------------------
--- Table `mydb`.`Quadra_has_Modalidade`
+-- Table `mydb`.`ModalidadeQuadra`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Quadra_has_Modalidade` (
+DROP TABLE IF EXISTS `mydb`.`ModalidadeQuadra` ;
+
+CREATE TABLE IF NOT EXISTS `mydb`.`ModalidadeQuadra` (
   `Quadra_ID` INT NOT NULL,
   `Modalidade_ID` INT NOT NULL,
   PRIMARY KEY (`Quadra_ID`, `Modalidade_ID`),
-  INDEX `fk_Quadra_has_Modalidade_Modalidade1_idx` (`Modalidade_ID` ASC) VISIBLE,
-  INDEX `fk_Quadra_has_Modalidade_Quadra1_idx` (`Quadra_ID` ASC) VISIBLE,
   CONSTRAINT `fk_Quadra_has_Modalidade_Quadra1`
     FOREIGN KEY (`Quadra_ID`)
     REFERENCES `mydb`.`Quadra` (`ID`)
@@ -159,10 +191,16 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Quadra_has_Modalidade` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+CREATE INDEX `fk_Quadra_has_Modalidade_Modalidade1_idx` ON `mydb`.`ModalidadeQuadra` (`Modalidade_ID` ASC) VISIBLE;
+
+CREATE INDEX `fk_Quadra_has_Modalidade_Quadra1_idx` ON `mydb`.`ModalidadeQuadra` (`Quadra_ID` ASC) VISIBLE;
+
 
 -- -----------------------------------------------------
 -- Table `mydb`.`Comentario`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`Comentario` ;
+
 CREATE TABLE IF NOT EXISTS `mydb`.`Comentario` (
   `id` INT NOT NULL,
   `mensagem` VARCHAR(280) NULL,
@@ -173,40 +211,44 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `mydb`.`ComentarioPartida`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`ComentarioPartida` ;
+
 CREATE TABLE IF NOT EXISTS `mydb`.`ComentarioPartida` (
+  `Pessoa_CPF` CHAR(11) NOT NULL,
   `Comentario_id` INT NOT NULL,
-  `Jogador_Pessoa_CPF` CHAR(11) NOT NULL,
   `Partida_ID` INT NOT NULL,
-  PRIMARY KEY (`Comentario_id`, `Jogador_Pessoa_CPF`),
-  INDEX `fk_ComentarioPartida_Jogador1_idx` (`Jogador_Pessoa_CPF` ASC) VISIBLE,
-  INDEX `fk_ComentarioPartida_Partida1_idx` (`Partida_ID` ASC) VISIBLE,
+  PRIMARY KEY (`Pessoa_CPF`, `Comentario_id`),
   CONSTRAINT `fk_ComentarioPartida_Comentario1`
     FOREIGN KEY (`Comentario_id`)
     REFERENCES `mydb`.`Comentario` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_ComentarioPartida_Jogador1`
-    FOREIGN KEY (`Jogador_Pessoa_CPF`)
-    REFERENCES `mydb`.`Jogador` (`Pessoa_CPF`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_ComentarioPartida_Partida1`
     FOREIGN KEY (`Partida_ID`)
     REFERENCES `mydb`.`Partida` (`ID`)
     ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ComentarioPartida_Pessoa1`
+    FOREIGN KEY (`Pessoa_CPF`)
+    REFERENCES `mydb`.`Pessoa` (`CPF`)
+    ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+CREATE INDEX `fk_ComentarioPartida_Partida1_idx` ON `mydb`.`ComentarioPartida` (`Partida_ID` ASC) VISIBLE;
+
+CREATE INDEX `fk_ComentarioPartida_Pessoa1_idx` ON `mydb`.`ComentarioPartida` (`Pessoa_CPF` ASC) VISIBLE;
+
 
 -- -----------------------------------------------------
--- Table `mydb`.`Comentario_has_Comentario`
+-- Table `mydb`.`ComentarioComentario`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Comentario_has_Comentario` (
+DROP TABLE IF EXISTS `mydb`.`ComentarioComentario` ;
+
+CREATE TABLE IF NOT EXISTS `mydb`.`ComentarioComentario` (
   `Comentario_id` INT NOT NULL,
   `Comentario_id1` INT NOT NULL,
   PRIMARY KEY (`Comentario_id`, `Comentario_id1`),
-  INDEX `fk_Comentario_has_Comentario_Comentario2_idx` (`Comentario_id1` ASC) VISIBLE,
-  INDEX `fk_Comentario_has_Comentario_Comentario1_idx` (`Comentario_id` ASC) VISIBLE,
   CONSTRAINT `fk_Comentario_has_Comentario_Comentario1`
     FOREIGN KEY (`Comentario_id`)
     REFERENCES `mydb`.`Comentario` (`id`)
@@ -218,6 +260,62 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Comentario_has_Comentario` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+CREATE INDEX `fk_Comentario_has_Comentario_Comentario2_idx` ON `mydb`.`ComentarioComentario` (`Comentario_id1` ASC) VISIBLE;
+
+CREATE INDEX `fk_Comentario_has_Comentario_Comentario1_idx` ON `mydb`.`ComentarioComentario` (`Comentario_id` ASC) VISIBLE;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`EndrecoPessoa`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`EndrecoPessoa` ;
+
+CREATE TABLE IF NOT EXISTS `mydb`.`EndrecoPessoa` (
+  `Pessoa_CPF` CHAR(11) NOT NULL,
+  `Endreco_idEndreco` INT NOT NULL,
+  PRIMARY KEY (`Pessoa_CPF`, `Endreco_idEndreco`),
+  CONSTRAINT `fk_Pessoa_has_Endreco_Pessoa1`
+    FOREIGN KEY (`Pessoa_CPF`)
+    REFERENCES `mydb`.`Pessoa` (`CPF`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Pessoa_has_Endreco_Endreco1`
+    FOREIGN KEY (`Endreco_idEndreco`)
+    REFERENCES `mydb`.`Endreco` (`idEndreco`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+CREATE INDEX `fk_Pessoa_has_Endreco_Endreco1_idx` ON `mydb`.`EndrecoPessoa` (`Endreco_idEndreco` ASC) VISIBLE;
+
+CREATE INDEX `fk_Pessoa_has_Endreco_Pessoa1_idx` ON `mydb`.`EndrecoPessoa` (`Pessoa_CPF` ASC) VISIBLE;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`PessoaPartida`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`PessoaPartida` ;
+
+CREATE TABLE IF NOT EXISTS `mydb`.`PessoaPartida` (
+  `Pessoa_CPF` CHAR(11) NOT NULL,
+  `Partida_ID` INT NOT NULL,
+  PRIMARY KEY (`Pessoa_CPF`, `Partida_ID`),
+  CONSTRAINT `fk_Pessoa_has_Partida_Pessoa1`
+    FOREIGN KEY (`Pessoa_CPF`)
+    REFERENCES `mydb`.`Pessoa` (`CPF`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Pessoa_has_Partida_Partida1`
+    FOREIGN KEY (`Partida_ID`)
+    REFERENCES `mydb`.`Partida` (`ID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+CREATE INDEX `fk_Pessoa_has_Partida_Partida1_idx` ON `mydb`.`PessoaPartida` (`Partida_ID` ASC) VISIBLE;
+
+CREATE INDEX `fk_Pessoa_has_Partida_Pessoa1_idx` ON `mydb`.`PessoaPartida` (`Pessoa_CPF` ASC) VISIBLE;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

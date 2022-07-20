@@ -5,8 +5,8 @@ async function insertCourt(court) {
     var db = await db_open();
     try {
       const courtResult = await db.run(
-        "INSERT INTO Quadra (descricao, endereco, longitude, latitude) VALUES (?,?,?,?)",
-        [court.descricao, court.endereco, court.longitude, court.latitude]
+        "INSERT INTO Quadra (descricao, id_endereco) VALUES (?,?)",
+        [court.descricao, court.id_endereco]
       );
       return courtResult;
     } catch (e) {
@@ -26,7 +26,7 @@ async function getAllCourts() {
   try {
     var db = await db_open();
     try {
-      const courts = await db.all("SELECT * FROM Quadra");
+      const courts = await db.all("SELECT Quadra.id, Quadra.descricao, Endereco.CEP, Endereco.numero, Endereco.complemento, Endereco.UF, Endereco.logradouro, Endereco.bairro, Endereco.localidade, Endereco.latitude, Endereco.longitude FROM Quadra, Endereco WHERE Quadra.id_endereco=Endereco.id");
       return courts;
     } catch (e) {
       return {
@@ -41,11 +41,12 @@ async function getAllCourts() {
   }
 }
 
-async function getCourt(id) {
+async function getCourt(court) {
   try {
     var db = await db_open();
     try {
-      return await db.get("SELECT * FROM Quadra WHERE id=?", [id]);
+      const courtResult = await db.get("SELECT Quadra.id, Quadra.descricao, Endereco.CEP, Endereco.numero, Endereco.complemento, Endereco.UF, Endereco.logradouro, Endereco.bairro, Endereco.localidade, Endereco.latitude, Endereco.longitude FROM Quadra, Endereco WHERE Quadra.id=? AND Quadra.id_endereco=Endereco.id", [court.id]);
+      return courtResult;
     } catch (e) {
       return { error: e };
     }
@@ -56,13 +57,21 @@ async function getCourt(id) {
   }
 }
 
-async function deleteCourt(id) {
+async function deleteCourt(court) {
   try {
     var db = await db_open();
     try {
-      return await db.get("DELETE FROM Quadra WHERE id=?", [id]);
+      const courtResult = await db.get("DELETE FROM Quadra WHERE id=?", [court.id]);
+      if(courtResult)
+        return courtResult;
+      return {
+        error: "Court not Found!"
+      }
     } catch (e) {
-      return { error: e };
+      return { 
+        court,
+        error: e
+      };
     }
   } catch (e) {
     return DB_ERROR_OBJ(e);
@@ -79,12 +88,10 @@ async function updateCourt(court) {
         court.id,
       ]);
       await db.run(
-        "UPDATE Quadra SET descricao=?, endereco=?, longitude=?, latitude=? WHERE id=?",
+        "UPDATE Quadra SET descricao=?, id_endereco=? WHERE id=?",
         [
           court.descricao,
-          court.endereco,
-          court.longitude,
-          court.latitude,
+          court.id_endereco,
           court.id,
         ]
       );

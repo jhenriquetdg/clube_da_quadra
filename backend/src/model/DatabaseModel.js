@@ -1,6 +1,6 @@
 const { db_open } = require("../database/initDB");
 
-async function createTablePessoa() {
+function createTablePessoa() {
   db_open().then((db) => {
     db.exec(
       "CREATE TABLE IF NOT EXISTS `Pessoa` (" +
@@ -18,11 +18,11 @@ async function createTablePessoa() {
   });
 }
 
-async function createTableEndereco() {
+function createTableEndereco() {
   db_open().then((db) => {
     db.exec(
       "CREATE TABLE IF NOT EXISTS `Endereco` (" +
-        " `id` INT NOT NULL," +
+        " `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
         " `CEP` VARCHAR(8) NULL," +
         " `numero` VARCHAR(9) NULL," +
         " `complemento` VARCHAR(45) NULL," +
@@ -31,22 +31,20 @@ async function createTableEndereco() {
         " `bairro` VARCHAR(45) NULL," +
         " `localidade` VARCHAR(45) NULL," +
         " `latitude` DECIMAL(4,4) NULL," +
-        " `longitude` DECIMAL(4,4) NULL," +
-        " PRIMARY KEY (`id`))"
+        " `longitude` DECIMAL(4,4) NULL)"
     );
   });
 }
 
-async function createTableQuadra() {
+function createTableQuadra() {
   db_open().then((db) => {
     db.exec(
       "CREATE TABLE IF NOT EXISTS `Quadra` (" +
-        " `id` INT NOT NULL," +
+        " `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
         " `descricao` VARCHAR(280) NULL," +
-        " `id_endreco` INT NOT NULL," +
-        " PRIMARY KEY (`id`, `id_endreco`)," +
-        " CONSTRAINT `fk_Quadra_Endreco1`" +
-        "   FOREIGN KEY (`id_endreco`)" +
+        " `id_endereco` INT NOT NULL," +
+        " CONSTRAINT `fk_Quadra_Endereco1`" +
+        "   FOREIGN KEY (`id_endereco`)" +
         "   REFERENCES `Endreco` (`id`)" +
         "   ON DELETE CASCADE" +
         "   ON UPDATE NO ACTION)"
@@ -54,7 +52,7 @@ async function createTableQuadra() {
   });
 }
 
-async function createTableModalidade() {
+function createTableModalidade() {
   db_open().then((db) => {
     db.exec(
       "CREATE TABLE IF NOT EXISTS `Modalidade` (" +
@@ -67,7 +65,7 @@ async function createTableModalidade() {
   });
 }
 
-async function createTableHorario() {
+function createTableHorario() {
   db_open().then((db) => {
     db.exec(
       "CREATE TABLE IF NOT EXISTS `Horario` (" +
@@ -78,15 +76,14 @@ async function createTableHorario() {
   });
 }
 
-async function createTablePartida() {
+function createTablePartida() {
   db_open().then((db) => {
     db.exec(
       "CREATE TABLE IF NOT EXISTS `Partida` (" +
-        " `id` INT NOT NULL," +
+        " `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
         " `id_horario` INT NOT NULL," +
         " `id_quadra` INT NOT NULL," +
         " `id_modalidade` INT NOT NULL," +
-        "PRIMARY KEY (`id`)," +
         "CONSTRAINT `fk_Partida_Horario1`" +
         "    FOREIGN KEY (`id_horario`)" +
         "    REFERENCES `Horario` (`id`)" +
@@ -106,15 +103,14 @@ async function createTablePartida() {
   });
 }
 
-async function createTableInteresse() {
+function createTableInteresse() {
   db_open().then((db) => {
     db.exec(
       "CREATE TABLE IF NOT EXISTS `Interesse` (" +
-        " `id` INT NOT NULL," +
+        " `CPF_pessoa` CHAR(11) NOT NULL," +
         " `id_horario` INT NOT NULL," +
         " `id_modalidade` INT NOT NULL," +
-        " `CPF_pessoa` CHAR(11) NOT NULL," +
-        " PRIMARY KEY (`id`, `id_horario`, `id_modalidade`, `CPF_pessoa`)," +
+        " PRIMARY KEY (`CPF_pessoa`, `id_horario`, `id_modalidade`)," +
         " CONSTRAINT `fk_Interesse_Horario1`" +
         "   FOREIGN KEY (`id_horario`)" +
         "   REFERENCES `Horario` (`id`)" +
@@ -134,7 +130,7 @@ async function createTableInteresse() {
   });
 }
 
-async function createTableQuadraModalidade() {
+function createTableQuadraModalidade() {
   db_open().then((db) => {
     db.exec(
       "CREATE TABLE IF NOT EXISTS `QuadraModalidade` (" +
@@ -155,13 +151,13 @@ async function createTableQuadraModalidade() {
   });
 }
 
-async function createTablePessoaPartida() {
+function createTablePessoaPartida() {
   db_open().then((db) => {
     db.exec(
       "CREATE TABLE IF NOT EXISTS `PessoaPartida` (" +
+        " `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
         " `CPF_pessoa` CHAR(11) NOT NULL," +
         " `id_partida` INT NOT NULL," +
-        "PRIMARY KEY (`CPF_pessoa`, `id_partida`)," +
         "CONSTRAINT `fk_PessoaPartida_Pessoa1`" +
         "    FOREIGN KEY (`CPF_pessoa`)" +
         "    REFERENCES `Pessoa` (`CPF`)" +
@@ -176,7 +172,7 @@ async function createTablePessoaPartida() {
   });
 }
 
-async function createTableComentario() {
+function createTableComentario() {
   db_open().then((db) => {
     db.exec(
       "CREATE TABLE IF NOT EXISTS `Comentario` (" +
@@ -187,7 +183,7 @@ async function createTableComentario() {
   });
 }
 
-async function createTableComentarioPartida() {
+function createTableComentarioPartida() {
   db_open().then((db) => {
     db.exec(
       "CREATE TABLE IF NOT EXISTS `ComentarioPartida` (" +
@@ -214,7 +210,7 @@ async function createTableComentarioPartida() {
   });
 }
 
-async function createTableComentarioComentario() {
+function createTableComentarioComentario() {
   db_open().then((db) => {
     db.exec(
       "CREATE TABLE IF NOT EXISTS `ComentarioComentario` (" +
@@ -235,7 +231,7 @@ async function createTableComentarioComentario() {
   });
 }
 
-async function selectTables(req, res) {
+function selectTables(req, res) {
   console.log("Listing tables...");
   db_open()
     .then((db) => {
@@ -245,7 +241,7 @@ async function selectTables(req, res) {
   console.log(" done.");
 }
 
-function createTables(req, res) {
+function createTables() {
   createTablePessoa();
   createTableHorario();
   createTableEndereco();
@@ -262,58 +258,6 @@ function createTables(req, res) {
   console.log("Database tables was successfully created.");
 }
 
-async function populatePerson() {
-  db_open().then((db) => {
-    db.exec(
-      "INSERT OR REPLACE INTO Pessoa (CPF, nome, dataNasc, genero, altura, peso, email, senha, ladoDominante) VALUES ('24829420842', 'Joao', '15/01/2001', 'M', 175, 70, 'anonymous@anon.com', '12345678', 'E')"
-    );
-    db.exec(
-      "INSERT OR REPLACE INTO Pessoa (CPF, nome, dataNasc, genero, altura, peso, email, senha, ladoDominante) VALUES ('24829420842', 'Joao', '15/01/2001', 'M', 175, 70, 'anonymous@anon.com', '12345678', 'E')"
-    );
-    db.exec(
-      "INSERT OR REPLACE INTO Pessoa (CPF, nome, dataNasc, genero, altura, peso, email, senha, ladoDominante) VALUES ('34822470842', 'Marcos', '26/02/1999', 'M', 175, 70, 'anonymous@anon.com', '12345678', 'D')"
-    );
-    db.exec(
-      "INSERT OR REPLACE INTO Pessoa (CPF, nome, dataNasc, genero, altura, peso, email, senha, ladoDominante) VALUES ('44822446842', 'Joana', '05/03/1995', 'F', 175, 70, 'anonymous@anon.com', '12345678', 'D')"
-    );
-    db.exec(
-      "INSERT OR REPLACE INTO Pessoa (CPF, nome, dataNasc, genero, altura, peso, email, senha, ladoDominante) VALUES ('16829400842', 'Maria', '06/04/1999', 'F', 175, 70, 'anonymous@anon.com', '12345678', 'D')"
-    );
-    db.exec(
-      "INSERT OR REPLACE INTO Pessoa (CPF, nome, dataNasc, genero, altura, peso, email, senha, ladoDominante) VALUES ('94829490842', 'Julio', '02/05/2002', 'M', 175, 70, 'anonymous@anon.com', '12345678', 'E')"
-    );
-    db.exec(
-      "INSERT OR REPLACE INTO Pessoa (CPF, nome, dataNasc, genero, altura, peso, email, senha, ladoDominante) VALUES ('14862423843', 'Tiago', '17/06/1996', 'M', 175, 70, 'anonymous@anon.com', '12345678', 'D')"
-    );
-    db.exec(
-      "INSERT OR REPLACE INTO Pessoa (CPF, nome, dataNasc, genero, altura, peso, email, senha, ladoDominante) VALUES ('24829420842', 'Jose', '17/07/1994', 'M', 175, 70, 'anonymous@anon.com', '12345678', 'E')"
-    );
-    db.exec(
-      "INSERT OR REPLACE INTO Pessoa (CPF, nome, dataNasc, genero, altura, peso, email, senha, ladoDominante) VALUES ('14829421842', 'Daniel', '13/08/2004', 'M', 175, 70, 'anonymous@anon.com', '12345678', 'D')"
-    );
-    db.exec(
-      "INSERT OR REPLACE INTO Pessoa (CPF, nome, dataNasc, genero, altura, peso, email, senha, ladoDominante) VALUES ('44823428842', 'Mario', '21/09/2000', 'M', 175, 70, 'anonymous@anon.com', '12345678', 'D')"
-    );
-    db.exec(
-      "INSERT OR REPLACE INTO Pessoa (CPF, nome, dataNasc, genero, altura, peso, email, senha, ladoDominante) VALUES ('54829020042', 'Carlos', '27/10/2003', 'M', 175, 70, 'anonymous@anon.com', '12345678', 'E')"
-    );
-    db.exec(
-      "INSERT OR REPLACE INTO Pessoa (CPF, nome, dataNasc, genero, altura, peso, email, senha, ladoDominante) VALUES ('14822420842', 'Bruno', '30/11/2001', 'M', 175, 70, 'anonymous@anon.com', '12345678', 'D')"
-    );
-    db.exec(
-      "INSERT OR REPLACE INTO Pessoa (CPF, nome, dataNasc, genero, altura, peso, email, senha, ladoDominante) VALUES ('24729420842', 'Marcelo', '15/12/2001', 'M', 175, 70, 'anonymous@anon.com', '12345678', 'D')"
-    );
-    db.exec(
-      "INSERT OR REPLACE INTO Pessoa (CPF, nome, dataNasc, genero, altura, peso, email, senha, ladoDominante) VALUES ('24829421842', 'Pedro', '09/11/2002', 'M', 175, 70, 'anonymous@anon.com', '12345678', 'D')"
-    );
-  });
-}
-
-async function populateTables() {
-  await populatePerson();
-}
-
 module.exports = {
-  createTables,
-  populateTables,
-};
+  createTables
+}

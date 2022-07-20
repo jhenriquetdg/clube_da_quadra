@@ -3,15 +3,15 @@ const GameModel = require("../model/GameModel.js");
 async function createGame(req, res) {
     const gameReturn = await GameModel.createGame(req.body);
     return res.json({
-        statusCode:
-        gameReturn
+        statusCode: 200,
+        game: gameReturn
     });
 }
 
 async function deleteGame(req, res) {
     const gameReturn = await GameModel.deleteGame(req.body);
     return res.json({
-        statusCode:
+        statusCode: 200,
         gameReturn
     });
 }

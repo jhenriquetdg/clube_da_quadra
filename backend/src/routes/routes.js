@@ -45,7 +45,15 @@ const {
 const {
   insertPersonGame,
   deletePersonGame,
+  getAllPersonGame
 } = require("../controller/PersonGameController.js");
+const {
+  addAddress,
+  deleteAddress,
+  getAllAddresses,
+  getAddressByNeighborhood,
+  updateAddress
+}= require('../controller/AddressController.js');
 
 const router = Router();
 
@@ -56,49 +64,58 @@ router.get("/", (req, res) => {
   });
 });
 
-// User CRUD
+// User
 router.get("/user", getUser);
 router.get("/users", getAllUsers);
 router.post("/user", createUser);
 router.put("/user", updateUser);
 router.delete("/user", deleteUser);
 
-// Court CRUD
+// Court
 router.post("/court", addCourt);
 router.get("/courts", getAllCourts);
 router.get("/court", getCourtById);
 router.delete("/court", deleteCourt);
 router.put("/court", updateCourt);
 
-// Sport CRUD
+// Sport
 router.get("/sport", getSport);
 router.post("/sport", insertSport);
 router.get("/sports", getAllSports);
 router.delete("/sport", deleteSport);
 router.put("/sport", updateSport);
 
-// CourtSports CRUD
+// CourtSports
 router.post("/courtsport", insertCourtSport);
 router.delete("/courtsport", deleteCourtSport);
 
-// Schedule CRUD
+// Schedule
 router.post("/schedule", insertSchedule);
 router.delete("/schedule", deleteSchedule);
 router.get("/schedules", getAllSchedules);
 
-// Interest CRUD
+// Interest
 router.post("/interest", insertInterest);
 router.delete("/interest", deleteInterest);
 router.get("/interestbycpf", getInterestByCPF);
 router.get("/allinterested", getAllInterested);
 
-// Game CRUD
+// Game
 router.post("/game", createGame);
 router.delete("/game", deleteGame);
 router.get("/games", getAllGames);
 
-// PersonGame CRUD
+// PersonGame
 router.post("/persongame", insertPersonGame);
 router.delete("/persongame", deletePersonGame);
+router.get("/persongame", getAllPersonGame);
+
+// Address
+router.post("/address", addAddress);
+router.delete("/address", deleteAddress);
+router.get("/addresses", getAllAddresses);
+router.get("/addressesbyneighborhood", getAddressByNeighborhood);
+router.put("/address", updateAddress);
+
 
 module.exports = router;

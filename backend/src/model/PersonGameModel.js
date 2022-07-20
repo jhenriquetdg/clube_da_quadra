@@ -55,7 +55,28 @@ async function deletePersonGame(personGame) {
   }
 }
 
+async function getAllPersonGame() {
+  try {
+    var db = await db_open();
+
+    try {
+      const personGameReturn = await db.all("SELECT * FROM PessoaPartida, Pessoa, Partida WHERE PessoaPartida.id_partida=Partida.id AND PessoaPartida.CPF_pessoa=Pessoa.CPF");
+      return {personGame: personGameReturn};
+    } catch (e) {
+      return {
+        personGame: [],
+        error: e,
+      };
+    }
+  } catch (e) {
+    return DB_ERROR_OBJ(e);
+  } finally {
+    db.close();
+  }
+}
+
 module.exports = {
   insertPersonGame,
   deletePersonGame,
+  getAllPersonGame
 };

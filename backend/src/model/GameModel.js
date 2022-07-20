@@ -17,9 +17,7 @@ async function createGame(game) {
         "INSERT INTO Partida (id_horario, id_quadra, id_modalidade) VALUES (?,?,?)",
         [game.horario_id, game.quadra_id, game.modalidade_id]
       );
-      return {
-        game: gameResult,
-      };
+      return {id: gameResult.lastID};
     } catch (e) {
       return {
         game: game,
@@ -60,7 +58,9 @@ async function getAllGames() {
   try {
     var db = await db_open();
     try {
-      const games = await db.all("SELECT * FROM Partida");
+      const games = await db.all("SELECT Partida.id as id_partida, Pessoa.nome as nome,Pessoa.CPF as CPF, Horario.dataHoraInicio as hora_inicio, Horario.dataHoraFim as hora_final, Modalidade.nome as nome_modalidade, Quadra.descricao as quadra " +
+      "FROM PessoaPartida, Pessoa, Partida, Horario, Quadra, Modalidade " +
+      "WHERE PessoaPartida.id_partida=Partida.id AND PessoaPartida.CPF_pessoa=Pessoa.CPF AND Partida.id_horario=Horario.id AND Partida.id_quadra=Quadra.id AND Partida.id_modalidade=Modalidade.id");
       return games;
     } catch (e) {
       return {
