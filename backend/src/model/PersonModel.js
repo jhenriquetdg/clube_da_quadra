@@ -27,6 +27,7 @@ async function insertPessoa(pessoa) {
           pessoa.ladoDominante,
         ]
       );
+      console.log("added user");
       return {
         pessoa: pessoaResult,
       };
@@ -49,7 +50,7 @@ async function selectPessoas() {
     var db = await db_open();
 
     try {
-      const pessoas = await db.all("SELECT Pessoa.CPF, Pessoa.nome, Pessoa.dataNasc, Pessoa.genero FROM Pessoa");
+      const pessoas = await db.all("SELECT * FROM Pessoa");
       return pessoas;
     } catch (e) {
       return {

@@ -2,6 +2,8 @@ const PersonModel = require("../model/PersonModel.js");
 
 // Create a new User
 async function createUser(req, res) {
+  console.log("New user");
+  console.log(req.body);
   const newUser = await PersonModel.insertPessoa(req.body);
   res.json({
     statusCode: 200,
@@ -41,7 +43,12 @@ async function updateUser(req, res) {
 
 // Delete an especific User
 async function deleteUser(req, res) {
+  console.log(req.body);
   await PersonModel.deletePessoa(req.body.CPF);
+  return res.json({
+    statusCode: 200,
+    message: `CPF ${req.body.CPF} foi deletado com sucesso`,
+  });
 }
 
 module.exports = {
@@ -49,5 +56,5 @@ module.exports = {
   getAllUsers,
   getUser,
   updateUser,
-  deleteUser
-}
+  deleteUser,
+};

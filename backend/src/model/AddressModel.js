@@ -1,60 +1,72 @@
-const { db_open } = require('../database/initDB.js');
-
+const { db_open } = require("../database/initDB.js");
 
 async function insertAddress(address) {
+  try {
+    var db = await db_open();
     try {
-        var db = await db_open();
-        try {
-          const adressResult = await db.run(
-            "INSERT INTO Endereco (CEP, numero, complemento, UF, logradouro, bairro, localidade, latitude, longitude) VALUES (?,?,?,?,?,?,?,?,?)",
-            [
-                address.CEP,
-                address.numero,
-                address.complemento,
-                address.UF,
-                address.logradouro,
-                address.bairro,
-                address.localidade,
-                address.latitude,
-                address.longitude
-            ]
-          );
-          return {
-            adress: adressResult,
-          };
-        } catch (e) {
-          return {
-            address: address,
-            message: "Something went wrong, could not insert into database",
-            error: e,
-          };
-        }
+      const adressResult = await db.run(
+        "INSERT INTO Endereco (    " +
+          "   CEP," +
+          "   numero," +
+          "   complemento," +
+          "   UF," +
+          "   logradouro," +
+          "   bairro," +
+          "   localidade," +
+          "   latitude," +
+          "   longitude" +
+          ") VALUES (?,?,?,?,?,?,?,?,?)",
+        [
+          address.CEP,
+          address.numero,
+          address.complemento,
+          address.UF,
+          address.logradouro,
+          address.bairro,
+          address.localidade,
+          address.latitude,
+          address.longitude,
+        ]
+      );
+      console.log("oK");
+      return {
+        adress: adressResult,
+      };
     } catch (e) {
-    return DB_ERROR_OBJ(e);
-    } finally {
-    db.close();
+      return {
+        address: address,
+        message: "Something went wrong, could not insert into database",
+        error: e,
+      };
     }
+  } catch (e) {
+    return DB_ERROR_OBJ(e);
+  } finally {
+    db.close();
+  }
 }
 
 async function deleteAddress(address) {
+  try {
+    var db = await db_open();
     try {
-        var db = await db_open();
-        try {
-          const addressResult = await db.get("SELECT * FROM Endereco WHERE id=?", [address.id]);
-          await db.get("DELETE FROM Endereco WHERE id=?", [address.id]);
-          return addressResult;
-        } catch (e) {
-          return {
-            address,
-            message: "Something went wrong",
-            error: e,
-          };
-        }
+      const addressResult = await db.get("SELECT * FROM Endereco WHERE id=?", [
+        address.id,
+      ]);
+      await db.get("DELETE FROM Endereco WHERE id=?", [address.id]);
+      return addressResult;
     } catch (e) {
-    DB_ERROR_OBJ(e);
-    } finally {
-    db.close();
+      return {
+        address,
+        message: "Something went wrong",
+        error: e,
+      };
     }
+  } catch (e) {
+    DB_ERROR_OBJ(e);
+  } finally {
+    db.close();
+  }
 }
 
 async function updateAddress(address) {
@@ -66,7 +78,7 @@ async function updateAddress(address) {
       ]);
 
       await db.run(
-        "UPDATE Endereco SET CEP=?, numero=?, complemento=?, UF=?, logradouro=?, localidade=?, latitude=?, longitude=?  WHERE id=?",
+        "UPDATE Endereco SET CEP=?, numero=?, complemento=?, UF=?, logradouro=?, localidade=?, bairro=?, latitude=?, longitude=?  WHERE id=?",
         [
           address.CEP,
           address.numero,
@@ -74,14 +86,15 @@ async function updateAddress(address) {
           address.UF,
           address.logradouro,
           address.localidade,
+          address.bairro,
           address.latitude,
           address.longitude,
-          address.id
+          address.id,
         ]
       );
 
       const addressNew = await db.get("SELECT * FROM Endereco WHERE id=?", [
-        address.id
+        address.id,
       ]);
 
       return {
@@ -125,7 +138,10 @@ async function getAddressByNeighborhood(address) {
   try {
     var db = await db_open();
     try {
-      const addressReturn = await db.all("SELECT * FROM Endereco WHERE bairro=?", [address.neighborhood]);
+      const addressReturn = await db.all(
+        "SELECT * FROM Endereco WHERE bairro=?",
+        [address.neighborhood]
+      );
       return addressReturn;
     } catch (e) {
       return {
@@ -141,9 +157,9 @@ async function getAddressByNeighborhood(address) {
 }
 
 module.exports = {
-    insertAddress,
-    deleteAddress,
-    updateAddress,
-    getAllAddresses,
-    getAddressByNeighborhood
-}
+  insertAddress,
+  deleteAddress,
+  updateAddress,
+  getAllAddresses,
+  getAddressByNeighborhood,
+};

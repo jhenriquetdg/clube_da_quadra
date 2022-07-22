@@ -1,4 +1,4 @@
-.person__container {
+.address__container {
     width: 100%;
     background-color: rgba(255, 255, 255, 0.5);
     border-radius: 5px;
@@ -11,7 +11,7 @@
     padding: 20px;
 }
 
-.person__card {
+.address__card {
     height: 100%;
     width: 100%;
 
@@ -25,16 +25,20 @@
     border-radius: 5px;
 }
 
-.person__card .control {
+.address__card .control {
     width: 100%;
     color: black;
     background-color: #fff;
     display: flex;
     flex-direction: row;
-    justify-content: end;
+    justify-content: space-between;
     transition: all 2s;
+    padding: 0 0 0 0;
 }
 
-.person__card .control:hover {
+.address__card .control span {
+    font-size: 30px;
+}
+.address__card .control:hover {
     color: #e65400;
 }

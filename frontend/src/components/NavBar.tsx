@@ -1,5 +1,11 @@
 import "./NavBar.css";
-import { Binoculars, SignIn, SoccerBall, UsersThree } from "phosphor-react";
+import {
+    AddressBook,
+    Binoculars,
+    SignIn,
+    SoccerBall,
+    UsersThree,
+} from "phosphor-react";
 import { Link } from "react-router-dom";
 export default function NavBar() {
     return (
@@ -19,7 +25,15 @@ export default function NavBar() {
                             <span>Usuarios</span>
                         </Link>
                     </li>
+
                     <li>
+                        <Link to="/address">
+                            <UsersThree size={20} />
+                            <span>Enderços</span>
+                        </Link>
+                    </li>
+
+                    {/* <li>
                         <Link to="court">
                             <Binoculars size={20} />
                             <span>Quadras</span>
@@ -35,6 +49,12 @@ export default function NavBar() {
                         <Link to="login">
                             <SignIn size={20} />
                             <span>Login</span>
+                        </Link>
+                    </li> */}
+                    <li>
+                        <Link to="Register">
+                            <AddressBook size={20} />
+                            <span>Registrar-se</span>
                         </Link>
                     </li>
                 </ul>

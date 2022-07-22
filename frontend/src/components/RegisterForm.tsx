@@ -43,19 +43,22 @@ export default function RegisterForm() {
             const response = await axios.get(
                 `https://viacep.com.br/ws/${e.target.value}/json/`
             );
+            console.log(response.data);
             setValue("CEP", response.data.cep);
             setValue("logradouro", response.data.logradouro);
             setValue("numero", response.data.numero);
             setValue("complemento", response.data.complemento);
+            setValue("localidade", response.data.localidade);
             setValue("bairro", response.data.bairro);
-            setValue("uf", response.data.uf);
+            setValue("UF", response.data.uf);
         }
     }
 
     function envioFormulario(data: any) {
-        api.post("/user", data);
-        // api.post("/address", data);
         console.log(data);
+        console.log("enviando formulario");
+        api.post("/user", data);
+        api.post("/address", data);
     }
 
     return (
@@ -130,8 +133,8 @@ export default function RegisterForm() {
                     <label htmlFor="bairro">Bairro</label>
                     <input {...register("bairro")} type="text" />
 
-                    <label htmlFor="uf">Unidade Federativa</label>
-                    <input {...register("uf")} type="text" />
+                    <label htmlFor="UF">Unidade Federativa</label>
+                    <input {...register("UF")} type="text" />
 
                     <label htmlFor="longitude">Longitude</label>
                     <input
