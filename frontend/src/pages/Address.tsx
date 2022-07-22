@@ -47,7 +47,7 @@ export default function Address() {
     return (
         <>
             <div className="address__container">
-                <h1>Usuarios</h1>
+                <h1>Endereços</h1>
                 <button onClick={fetchData}>Fetch Data</button>
 
                 {address?.map((address) => {
